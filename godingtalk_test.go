@@ -12,7 +12,7 @@ func init() {
     c.refreshAccessToken()    
 }
 
-func TestSimple(t *testing.T) {    
+func TestGET(t *testing.T) {    
     departments, err:=c.DepartmentList()
     d,err := c.DepartmentDetail(departments.Departments[0].Id)
     if err!=nil {
@@ -21,4 +21,11 @@ func TestSimple(t *testing.T) {
     if (d.Id != departments.Departments[0].Id) {
         t.Error("DepartmentDetail error")
     }
+}
+
+func TestSend(t *testing.T) {
+    err := c.SendMessage("22194403", "Hello World")
+    if err!=nil {
+        t.Error(err)
+    }       
 }

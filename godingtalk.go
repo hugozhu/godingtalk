@@ -17,11 +17,17 @@ type DingTalkClient struct {
     accessToken string
 }
 
+//Marshallable is
+type Marshallable interface {
+    marshal() []byte
+}
+
 //Unmarshallable is 
 type Unmarshallable interface {
     checkError() error
 }
 
+//OAPIResponse is
 type OAPIResponse struct {
     ErrCode int `json:"errcode"`
     ErrMsg string `json:"errmsg"`    
@@ -34,6 +40,7 @@ func (data *OAPIResponse) checkError() (err error) {
     return err
 }
 
+//AccessTokenResponse is 
 type AccessTokenResponse struct {
     OAPIResponse
     AccessToken string `json:"access_token"`
@@ -52,7 +59,7 @@ func (c *DingTalkClient) refreshAccessToken() error {
     params := url.Values{}
     params.Add("corpid", c.corpID)
     params.Add("corpsecret", c.corpSecret)    
-    err := c.httpRPC("gettoken", params, &data)
+    err := c.httpRPC("gettoken", params, nil, &data)
     fmt.Println(err)
     if err==nil {
         c.accessToken = data.AccessToken        
