@@ -54,7 +54,8 @@ func NewDingTalkClient(corpID string, corpSecret string) *DingTalkClient {
     return c
 }
 
-func (c *DingTalkClient) refreshAccessToken() error {
+//RefreshAccessToken is 
+func (c *DingTalkClient) RefreshAccessToken() error {
     var data AccessTokenResponse
     params := url.Values{}
     params.Add("corpid", c.corpID)

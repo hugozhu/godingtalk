@@ -9,10 +9,10 @@ var c *DingTalkClient
 
 func init() {
     c = NewDingTalkClient(os.Getenv("corpid"),os.Getenv("corpsecret"))
-    c.refreshAccessToken()    
+    c.RefreshAccessToken()    
 }
 
-func TestGET(t *testing.T) {    
+func TestDepartmentApi(t *testing.T) {    
     departments, err:=c.DepartmentList()
     d,err := c.DepartmentDetail(departments.Departments[0].Id)
     if err!=nil {
@@ -23,7 +23,7 @@ func TestGET(t *testing.T) {
     }
 }
 
-func TestSend(t *testing.T) {
+func TestMessageApi(t *testing.T) {
     err := c.SendMessage("22194403", "Hello World")
     if err!=nil {
         t.Error(err)
