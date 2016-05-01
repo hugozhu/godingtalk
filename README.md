@@ -2,8 +2,7 @@
 
 DingTalk Open API golang SDK
 
-![http://static.dingtalk.com/media/lALOAQ6nfSvM5Q_229_43.png](http://open.dingtalk.com)
-
+![image](http://static.dingtalk.com/media/lALOAQ6nfSvM5Q_229_43.png)
 Checkout DingTalk Open API document at: http://open.dingtalk.com
 
 ## Usage
