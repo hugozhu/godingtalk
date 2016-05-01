@@ -1,10 +1,10 @@
 package godingtalk
 
 //SendAppMessage is 发送企业会话消息
-func (c *DingTalkClient) SendAppMessage(agentID string, msg string) error {
+func (c *DingTalkClient) SendAppMessage(agentID string, touser string, msg string) error {
     var data OAPIResponse
     request := map[string]interface{} {
-        "touser":"@all",
+        "touser":touser,
         "agentid":agentID,
         "msgtype":"text",
         "text": map[string]interface{} {

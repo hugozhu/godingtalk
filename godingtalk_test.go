@@ -38,12 +38,12 @@ func TestCreateChat(t *testing.T) {
 }
 
 func TestMessageApi(t *testing.T) {
-    // err := c.SendAppMessage("22194403", "测试消息，请忽略")
-    // if err!=nil {
-    //     t.Error(err)
-    // }    
-    err := c.SendTextMessage("0420506555", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，请忽略")
+    err := c.SendAppMessage("22194403", "0420506555", "测试消息，请忽略") //@all
     if err!=nil {
         t.Error(err)
-    }       
+    }    
+    err = c.SendTextMessage("0420506555", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，请忽略")
+    if err!=nil {
+        t.Error(err)
+    }
 }
