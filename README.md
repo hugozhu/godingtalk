@@ -1,6 +1,4 @@
-# dingtalk-openapi-golang-sdk
-
-DingTalk Open API golang SDK
+# DingTalk Open API golang SDK
 
 ![image](http://static.dingtalk.com/media/lALOAQ6nfSvM5Q_229_43.png)
 
@@ -36,5 +34,6 @@ func main() {
 
 export corpid=<组织的corpid 通过 https://oa.dingtalk.com 获取>
 export corpsecret=<组织的corpsecret 通过 https://oa.dingtalk.com 获取>
+
 go run src/main.go <agentid 通过 https://oa.dingtalk.com 获取> <userid 或 @all> "消息内容"
 ```
