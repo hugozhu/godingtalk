@@ -10,8 +10,8 @@ Fetch the SDK
 ```
 export GOPATH=`pwd`
 go get github.com/hugozhu/godingtalk
-export corpid=...
-export corpsecret=...
+export corpid=<组织的corpid 通过 https://oa.dingtalk.com 获取>
+export corpsecret=<组织的corpsecret 通过 https://oa.dingtalk.com 获取>
 ```
 
 Example to send a message
