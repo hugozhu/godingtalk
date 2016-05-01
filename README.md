@@ -1,8 +1,10 @@
 # dingtalk-openapi-sdk
-DingTalk Open API SDK in golang
+DingTalk Open API golang SDK
 
-http://open.dingtalk.com
+.. image:: http://static.dingtalk.com/media/lALOAQ6nfSvM5Q_229_43.png
+   :target: http://open.dingtalk.com
 
+Checkout DingTalk Open API document at: http://open.dingtalk.com
 
 ## Usage
 
