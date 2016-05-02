@@ -3,6 +3,7 @@ package godingtalk
 import (
 	"fmt"
 	"net/url"
+	"time"
 )
 
 const (
@@ -44,6 +45,16 @@ func (data *OAPIResponse) checkError() (err error) {
 type AccessTokenResponse struct {
 	OAPIResponse
 	AccessToken string `json:"access_token"`
+	Expires     int    `json:"expires_in"`
+	Created     int64
+}
+
+func (e *AccessTokenResponse) CreatedAt() int64 {
+	return e.Created
+}
+
+func (e *AccessTokenResponse) ExpiresIn() int {
+	return e.Expires
 }
 
 //NewDingTalkClient creates a DingTalkClient instance
@@ -57,12 +68,29 @@ func NewDingTalkClient(corpID string, corpSecret string) *DingTalkClient {
 //RefreshAccessToken is
 func (c *DingTalkClient) RefreshAccessToken() error {
 	var data AccessTokenResponse
+	cache := NewFileCache(".auth_file")
+	err := cache.Get(&data)
+	if err == nil {
+		c.accessToken = data.AccessToken
+		return nil
+	}
+
 	params := url.Values{}
 	params.Add("corpid", c.corpID)
 	params.Add("corpsecret", c.corpSecret)
-	err := c.httpRPC("gettoken", params, nil, &data)
+	err = c.httpRPC("gettoken", params, nil, &data)
 	if err == nil {
 		c.accessToken = data.AccessToken
+		if err == nil {
+			data.Expires = data.Expires | 7200
+			data.Created = time.Now().Unix()
+			cache.Set(&data)
+		}
 	}
 	return err
+}
+
+//GetJsAPITicket is to retrieve ticket for JS API
+func (c *DingTalkClient) GetJsAPITicket() (string, error) {
+	return "", nil
 }
