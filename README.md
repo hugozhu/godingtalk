@@ -12,7 +12,7 @@ export GOPATH=`pwd`
 go get github.com/hugozhu/godingtalk
 ```
 
-Example to send a message
+### Example code to send an micro app message
 
 ```
 package main
@@ -31,7 +31,11 @@ func main() {
 		log.Println(err)
 	}
 }
+```
 
+
+###  Run the example code
+```
 export corpid=<组织的corpid 通过 https://oa.dingtalk.com 获取>
 export corpsecret=<组织的corpsecret 通过 https://oa.dingtalk.com 获取>
 
