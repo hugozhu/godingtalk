@@ -1,0 +1,41 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.log-i {
+  color: green;
+}
+
+.log-e {
+  color: red;
+}
+
+.tag {
+  display: inline-block;
+  width: 170px;
+}
+
+.api {
+  display: inline-block;
+  width: 300px;
+}
+
+.hidden {
+  display: none;
+}
+
+.row button {
+  width: 100%;
+  height: 100px;
+}
+
+.log-row {
+  margin: 20px 10px 20px 10px;
+  font-size: 30px;
+  word-break: break-all;word-wrap: break-word;
+}
