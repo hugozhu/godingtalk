@@ -18,11 +18,6 @@ type DingTalkClient struct {
 	accessToken string
 }
 
-//Marshallable is
-type Marshallable interface {
-	marshal() []byte
-}
-
 //Unmarshallable is
 type Unmarshallable interface {
 	checkError() error
@@ -49,11 +44,31 @@ type AccessTokenResponse struct {
 	Created     int64
 }
 
+//CreatedAt is when the access token is generated
 func (e *AccessTokenResponse) CreatedAt() int64 {
 	return e.Created
 }
 
+//ExpiresIn is how soon the access token is expired
 func (e *AccessTokenResponse) ExpiresIn() int {
+	return e.Expires
+}
+
+//JsAPITicketResponse is
+type JsAPITicketResponse struct {
+	OAPIResponse
+	Ticket  string
+	Expires int `json:"expires_in"`
+	Created int64
+}
+
+//CreatedAt is when the ticket is generated
+func (e *JsAPITicketResponse) CreatedAt() int64 {
+	return e.Created
+}
+
+//ExpiresIn is how soon the ticket is expired
+func (e *JsAPITicketResponse) ExpiresIn() int {
 	return e.Expires
 }
 
@@ -65,7 +80,7 @@ func NewDingTalkClient(corpID string, corpSecret string) *DingTalkClient {
 	return c
 }
 
-//RefreshAccessToken is
+//RefreshAccessToken is to get a valid access token
 func (c *DingTalkClient) RefreshAccessToken() error {
 	var data AccessTokenResponse
 	cache := NewFileCache(".auth_file")
@@ -90,7 +105,12 @@ func (c *DingTalkClient) RefreshAccessToken() error {
 	return err
 }
 
-//GetJsAPITicket is to retrieve ticket for JS API
-func (c *DingTalkClient) GetJsAPITicket() (string, error) {
-	return "", nil
+//GetJsAPITicket is to get a valid ticket for JS API
+func (c *DingTalkClient) GetJsAPITicket() (ticket string, err error) {
+	var data JsAPITicketResponse
+	err = c.httpRPC("get_jsapi_ticket", nil, nil, &data)
+	if err == nil {
+		ticket = data.Ticket
+	}
+	return ticket, nil
 }
