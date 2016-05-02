@@ -18,18 +18,18 @@ go get github.com/hugozhu/godingtalk
 package main
 
 import (
-	"github.com/hugozhu/godingtalk"
-	"log"
-	"os"
+    "github.com/hugozhu/godingtalk"
+    "log"
+    "os"
 )
 
 func main() {
-	c := godingtalk.NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
-	c.RefreshAccessToken()
-	err := c.SendAppMessage(os.Args[1], os.Args[2], os.Args[3])
-	if err != nil {
-		log.Println(err)
-	}
+    c := godingtalk.NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
+    c.RefreshAccessToken()
+    err := c.SendAppMessage(os.Args[1], os.Args[2], os.Args[3])
+    if err != nil {
+        log.Println(err)
+    }
 }
 ```
 

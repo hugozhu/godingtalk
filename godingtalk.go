@@ -1,6 +1,7 @@
 package godingtalk
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
@@ -13,9 +14,10 @@ const (
 
 //DingTalkClient is the Client to access DingTalk Open API
 type DingTalkClient struct {
-	corpID      string
-	corpSecret  string
-	accessToken string
+	CorpID      string
+	CorpSecret  string
+	AgentID     string
+	AccessToken string
 }
 
 //Unmarshallable is
@@ -75,8 +77,8 @@ func (e *JsAPITicketResponse) ExpiresIn() int {
 //NewDingTalkClient creates a DingTalkClient instance
 func NewDingTalkClient(corpID string, corpSecret string) *DingTalkClient {
 	c := new(DingTalkClient)
-	c.corpID = corpID
-	c.corpSecret = corpSecret
+	c.CorpID = corpID
+	c.CorpSecret = corpSecret
 	return c
 }
 
@@ -86,16 +88,16 @@ func (c *DingTalkClient) RefreshAccessToken() error {
 	cache := NewFileCache(".auth_file")
 	err := cache.Get(&data)
 	if err == nil {
-		c.accessToken = data.AccessToken
+		c.AccessToken = data.AccessToken
 		return nil
 	}
 
 	params := url.Values{}
-	params.Add("corpid", c.corpID)
-	params.Add("corpsecret", c.corpSecret)
+	params.Add("corpid", c.CorpID)
+	params.Add("corpsecret", c.CorpSecret)
 	err = c.httpRPC("gettoken", params, nil, &data)
 	if err == nil {
-		c.accessToken = data.AccessToken
+		c.AccessToken = data.AccessToken
 		if err == nil {
 			data.Expires = data.Expires | 7200
 			data.Created = time.Now().Unix()
@@ -108,9 +110,37 @@ func (c *DingTalkClient) RefreshAccessToken() error {
 //GetJsAPITicket is to get a valid ticket for JS API
 func (c *DingTalkClient) GetJsAPITicket() (ticket string, err error) {
 	var data JsAPITicketResponse
+	cache := NewFileCache(".jsapi_ticket")
+	err = cache.Get(&data)
+	if err == nil {
+		return data.Ticket, err
+	}
 	err = c.httpRPC("get_jsapi_ticket", nil, nil, &data)
 	if err == nil {
 		ticket = data.Ticket
+		cache.Set(&data)
 	}
-	return ticket, nil
+	return ticket, err
+}
+
+//GetConfig is to return config in json
+func (c *DingTalkClient) GetConfig(nonceStr string, timestamp string, url string) string {
+	ticket, _ := c.GetJsAPITicket()
+	config := map[string]string{
+		"url":       url,
+		"nonceStr":  nonceStr,
+		"agentId":   c.AgentID,
+		"timeStamp": timestamp,
+		"corpId":    c.CorpID,
+		"ticket":    ticket,
+		"signature": Sign(ticket, nonceStr, timestamp, url),
+	}
+	bytes, _ := json.Marshal(&config)
+	return string(bytes)
+}
+
+//Sign is 签名
+func Sign(ticket string, nonceStr string, timeStamp string, url string) string {
+	s := fmt.Sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s", ticket, nonceStr, timeStamp, url)
+	return sha1Sign(s)
 }

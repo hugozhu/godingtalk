@@ -9,15 +9,23 @@ var c *DingTalkClient
 
 func init() {
 	c = NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
-	c.RefreshAccessToken()
+	err := c.RefreshAccessToken()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func TestDepartmentApi(t *testing.T) {
 	departments, err := c.DepartmentList()
-	// t.Logf("%+v", departments)
+	// t.Logf("%+v %+v", departments, err)
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
 	d, err := c.DepartmentDetail(departments.Departments[0].Id)
 	if err != nil {
 		t.Error(err)
+		t.FailNow()
 	}
 	if d.Id != departments.Departments[0].Id {
 		t.Error("DepartmentDetail error")
