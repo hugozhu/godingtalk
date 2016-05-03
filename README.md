@@ -12,7 +12,7 @@ export GOPATH=`pwd`
 go get github.com/hugozhu/godingtalk
 ```
 
-### Example code to send an micro app message
+### Example code to send a micro app message
 
 ```
 package main
