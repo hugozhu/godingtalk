@@ -58,13 +58,29 @@ func TestCreateChat(t *testing.T) {
 	// t.Log("-----",chatid)
 }
 
-func TestMessageApi(t *testing.T) {
-	// err := c.SendAppMessage("22194403", "0420506555", "测试消息，请忽略") //@all
-	// if err != nil {
-	// 	t.Error(err)
-	// }
-	// err = c.SendTextMessage("0420506555", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，请忽略")
-	// if err != nil {
-	// 	t.Error(err)
-	// }
+func TestSendAppMessageApi(t *testing.T) {
+	err := c.SendAppMessage("22194403", "0420506555", "测试消息，请忽略") //@all
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestTextMessage(t *testing.T) {
+	err := c.SendTextMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，请忽略")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestSendOAMessage(t *testing.T) {
+	msg := OAMessage{}
+	msg.Url = "http://www.google.com/"
+	msg.Head.Text = "头部标题"
+	msg.Head.BgColor = "FFBBBBBB"
+	msg.Content = "test content"
+	msg.Body.Title = "正文标题"
+	err := c.SendOAMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", msg)
+	if err != nil {
+		t.Error(err)
+	}
 }
