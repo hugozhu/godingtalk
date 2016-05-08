@@ -6,13 +6,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"time"
 )
 
 func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData interface{}, responseData Unmarshallable) error {
-	client := http.Client{
-		Timeout: 10 * time.Second,
-	}
+	client := c.HTTPClient
 	var request *http.Request
 	if c.AccessToken != "" {
 		if params == nil {

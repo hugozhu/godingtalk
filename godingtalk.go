@@ -3,6 +3,7 @@ package godingtalk
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"net/url"
 	"time"
 )
@@ -18,6 +19,7 @@ type DingTalkClient struct {
 	CorpSecret  string
 	AgentID     string
 	AccessToken string
+	HTTPClient  *http.Client
 }
 
 //Unmarshallable is
@@ -79,6 +81,9 @@ func NewDingTalkClient(corpID string, corpSecret string) *DingTalkClient {
 	c := new(DingTalkClient)
 	c.CorpID = corpID
 	c.CorpSecret = corpSecret
+	c.HTTPClient = &http.Client{
+		Timeout: 10 * time.Second,
+	}
 	return c
 }
 
