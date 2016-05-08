@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 )
@@ -21,7 +20,6 @@ func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData int
 	url2 := ROOT + path + "?" + params.Encode()
 	if requestData != nil {
 		d, _ := json.Marshal(requestData)
-		log.Printf(string(d))
 		request, _ = http.NewRequest("POST", url2, bytes.NewReader(d))
 		request.Header.Set("Content-Type", "application/json")
 	} else {
