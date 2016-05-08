@@ -74,11 +74,11 @@ func TestTextMessage(t *testing.T) {
 
 func TestSendOAMessage(t *testing.T) {
 	msg := OAMessage{}
-	msg.Url = "http://www.google.com/"
+	msg.URL = "http://www.google.com/"
 	msg.Head.Text = "头部标题"
 	msg.Head.BgColor = "FFBBBBBB"
-	msg.Content = "test content"
 	msg.Body.Title = "正文标题"
+	msg.Body.Content = "test content"
 	err := c.SendOAMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", msg)
 	if err != nil {
 		t.Error(err)

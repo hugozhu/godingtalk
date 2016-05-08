@@ -30,8 +30,9 @@ func (c *DingTalkClient) SendTextMessage(sender string, cid string, msg string) 
 	return err
 }
 
+//OAMessage is the Message for OA
 type OAMessage struct {
-	Url  string `json:"message_url"`
+	URL  string `json:"message_url"`
 	Head struct {
 		BgColor string `json:"bgcolor,omitempty"`
 		Text    string `json:"text,omitempty"`
@@ -46,8 +47,8 @@ type OAMessage struct {
 			Num  string `json:"num,omitempty"`
 			Unit string `json:"body,omitempty"`
 		} `json:"rich,omitempty"`
+		Content string `json:"content,omitempty"`
 	} `json:"body,omitempty"`
-	Content   string `json:"content,omitempty"`
 	Image     string `json:"image,omitempty"`
 	FileCount int    `json:"file_count,omitempty"`
 	Author    string `json:"author,omitempty"`
