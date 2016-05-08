@@ -42,16 +42,16 @@ type OAMessage struct {
 		Form  []struct {
 			Key   string `json:"key,omitempty"`
 			Value string `json:"value,omitempty"`
-		} `json:"body,omitempty"`
+		} `json:"form,omitempty"`
 		Rich struct {
 			Num  string `json:"num,omitempty"`
 			Unit string `json:"body,omitempty"`
 		} `json:"rich,omitempty"`
-		Content string `json:"content,omitempty"`
+		Content   string `json:"content,omitempty"`
+		Image     string `json:"image,omitempty"`
+		FileCount int    `json:"file_count,omitempty"`
+		Author    string `json:"author,omitempty"`
 	} `json:"body,omitempty"`
-	Image     string `json:"image,omitempty"`
-	FileCount int    `json:"file_count,omitempty"`
-	Author    string `json:"author,omitempty"`
 }
 
 //SendOAMessage is 发送OA消息
