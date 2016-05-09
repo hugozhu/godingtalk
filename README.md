@@ -34,10 +34,30 @@ func main() {
 ```
 
 
-###  Run the example code
+## ding_alert
+
+Command line tool to send app/text/oa ... messages
+
 ```
+export GOPATH=`pwd`
+go get github.com/hugozhu/godingtalk/ding_alert
+
 export corpid=<组织的corpid 通过 https://oa.dingtalk.com 获取>
 export corpsecret=<组织的corpsecret 通过 https://oa.dingtalk.com 获取>
 
-go run src/main.go <agentid 通过 https://oa.dingtalk.com 获取> <userid 或 @all> "消息内容"
+./bin/ding_alert
+Usage of ./bin/ding_alert:
+  -agent string
+    	agent Id (default "22194403")
+  -chat string
+    	chat id (default "chat6a93bc1ee3b7d660d372b1b877a9de62")
+  -link string
+    	link url (default "http://hugozhu.myalert.info/dingtalk")
+  -sender string
+    	sender id (default "011217462940")
+  -touser string
+    	touser id (default "0420506555")
+  -type string
+    	message type (default "app")
+
 ```
