@@ -34,9 +34,15 @@ func main() {
 ```
 
 
-## ding_alert
+## Guide
 
-Command line tool to send app/text/oa ... messages
+Step-by-step Guide to use this SDK
+
+http://hugozhu.myalert.info/2016/05/02/66-use-dingtalk-golang-sdk-to-send-message-on-pi.html
+
+## Tools
+
+ding_alert: Command line tool to send app/text/oa ... messages
 
 ```
 export GOPATH=`pwd`
