@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	dingtalk "github.com/hugozhu/godingtalk"
 )
@@ -16,19 +17,26 @@ var toUser string
 var chatID string
 var content string
 var link string
+var file string
 
 func init() {
-	flag.StringVar(&msgType, "type", "app", "message type")
+	flag.StringVar(&msgType, "type", "app", "message type (app, text, image, voice, link, oa)")
 	flag.StringVar(&agentID, "agent", "22194403", "agent Id")
 	flag.StringVar(&senderID, "sender", "011217462940", "sender id")
 	flag.StringVar(&toUser, "touser", "0420506555", "touser id")
 	flag.StringVar(&chatID, "chat", "chat6a93bc1ee3b7d660d372b1b877a9de62", "chat id")
 	flag.StringVar(&link, "link", "http://hugozhu.myalert.info/dingtalk", "link url")
+	flag.StringVar(&file, "file", "", "file path for media message")
 	flag.Parse()
 }
 
 func usage() {
 	flag.Usage()
+	os.Exit(-1)
+}
+
+func fatalError(err error) {
+	fmt.Println(err)
 	os.Exit(-1)
 }
 
@@ -45,6 +53,74 @@ func main() {
 		err = c.SendAppMessage(agentID, toUser, content)
 	case "text":
 		err = c.SendTextMessage(senderID, chatID, content)
+	case "image":
+		if file == "" {
+			panic("Image path is empty")
+		}
+		f, err := os.Open(file)
+		defer f.Close()
+		if err != nil {
+			fatalError(err)
+		}
+		media, err := c.UploadMedia("image", filepath.Base(file), f)
+		if err != nil {
+			fatalError(err)
+		}
+		err = c.SendImageMessage(senderID, chatID, media.MediaID)
+		if err != nil {
+			fatalError(err)
+		}
+	case "voice":
+		if file == "" {
+			panic("Voice file path is empty")
+		}
+		f, err := os.Open(file)
+		defer f.Close()
+		if err != nil {
+			fatalError(err)
+		}
+		media, err := c.UploadMedia("voice", filepath.Base(file), f)
+		if err != nil {
+			fatalError(err)
+		}
+		err = c.SendVoiceMessage(senderID, chatID, media.MediaID, "10")
+		if err != nil {
+			fatalError(err)
+		}
+	case "file":
+		if file == "" {
+			panic("File path is empty")
+		}
+		f, err := os.Open(file)
+		defer f.Close()
+		if err != nil {
+			fatalError(err)
+		}
+		media, err := c.UploadMedia("file", filepath.Base(file), f)
+		if err != nil {
+			fatalError(err)
+		}
+		err = c.SendFileMessage(senderID, chatID, media.MediaID)
+		if err != nil {
+			fatalError(err)
+		}
+	case "link":
+		if file == "" {
+			panic("File path is empty")
+		}
+		f, err := os.Open(file)
+		defer f.Close()
+		if err != nil {
+			fatalError(err)
+		}
+		media, err := c.UploadMedia("image", filepath.Base(file), f)
+		if err != nil {
+			fatalError(err)
+		}
+		err = c.SendLinkMessage(senderID, chatID, media.MediaID, "http://www.baidu.com/", "Baidu.com", "this is baidu")
+		if err != nil {
+			fatalError(err)
+		}
 	case "oa":
 		msg := dingtalk.OAMessage{}
 		json.Unmarshal([]byte(content), &msg)

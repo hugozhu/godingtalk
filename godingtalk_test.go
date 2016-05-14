@@ -85,7 +85,7 @@ func TestSendOAMessage(t *testing.T) {
 	}
 }
 
-func TestDownloadAndUploadFile(t *testing.T) {
+func TestDownloadAndUploadImage(t *testing.T) {
 	f, err := os.Create("lADOHrf_oVxc.jpg")
 	if err == nil {
 		err = c.DownloadMedia("@lADOHrf_oVxc", f)
@@ -106,6 +106,23 @@ func TestDownloadAndUploadFile(t *testing.T) {
 		t.Error(err)
 	}
 	err = c.SendImageMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "@lADOHrf_oVxc")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestVoiceMessage(t *testing.T) {
+	// f, _ := os.Open("/Users/hugozhu/Downloads/BlackBerry_test2_AMR-NB_Mono_12.2kbps_8000Hz.amr")
+	// defer f.Close()
+	// media, err := c.UploadMedia("voice", "sample.amr", f)
+	// if media.MediaID == "" {
+	// 	t.Error("Upload File Failed")
+	// }
+	// t.Log("uploaded file mediaid:", media.MediaID)
+	// if err != nil {
+	// 	t.Error(err)
+	// }
+	err := c.SendVoiceMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "@lATOHr53E84DALnDzml4wS0", "10")
 	if err != nil {
 		t.Error(err)
 	}
