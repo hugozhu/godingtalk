@@ -57,13 +57,19 @@ Usage of ./bin/ding_alert:
     	agent Id (default "22194403")
   -chat string
     	chat id (default "chat6a93bc1ee3b7d660d372b1b877a9de62")
+  -file string
+    	file path for media message
   -link string
     	link url (default "http://hugozhu.myalert.info/dingtalk")
   -sender string
     	sender id (default "011217462940")
+  -text string
+    	text for link message (default "This is link text")
+  -title string
+    	title for link message (default "This is link title")
   -touser string
     	touser id (default "0420506555")
   -type string
-    	message type (default "app")
+    	message type (app, text, image, voice, link, oa) (default "app")
 
 ```
