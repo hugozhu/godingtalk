@@ -84,3 +84,15 @@ func TestSendOAMessage(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestUploadFile(t *testing.T) {
+	f, _ := os.Open("/Users/hugozhu/Downloads/Screenshot_0.png")
+	defer f.Close()
+	media, err := c.UploadMedia("image", "myfile.jpg", f)
+	if media.MediaID == "" {
+		t.Error("Upload File Failed")
+	}
+	if err != nil {
+		t.Error(err)
+	}
+}
