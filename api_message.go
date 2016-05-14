@@ -30,6 +30,21 @@ func (c *DingTalkClient) SendTextMessage(sender string, cid string, msg string) 
 	return err
 }
 
+//SendImageMessage is 发送图片消息
+func (c *DingTalkClient) SendImageMessage(sender string, cid string, mediaID string) error {
+	var data OAPIResponse
+	request := map[string]interface{}{
+		"chatid":  cid,
+		"sender":  sender,
+		"msgtype": "image",
+		"image": map[string]string{
+			"media_id": mediaID,
+		},
+	}
+	err := c.httpRPC("chat/send", nil, request, &data)
+	return err
+}
+
 //OAMessage is the Message for OA
 type OAMessage struct {
 	URL  string `json:"message_url"`

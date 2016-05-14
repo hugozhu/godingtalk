@@ -85,13 +85,27 @@ func TestSendOAMessage(t *testing.T) {
 	}
 }
 
-func TestUploadFile(t *testing.T) {
-	f, _ := os.Open("/Users/hugozhu/Downloads/Screenshot_0.png")
+func TestDownloadAndUploadFile(t *testing.T) {
+	f, err := os.Create("lADOHrf_oVxc.jpg")
+	if err == nil {
+		err = c.DownloadMedia("@lADOHrf_oVxc", f)
+	}
+	if err != nil {
+		t.Error(err)
+	}
+	f.Close()
+
+	f, _ = os.Open("lADOHrf_oVxc.jpg")
 	defer f.Close()
 	media, err := c.UploadMedia("image", "myfile.jpg", f)
 	if media.MediaID == "" {
 		t.Error("Upload File Failed")
 	}
+	t.Log("uploaded file mediaid:", media.MediaID)
+	if err != nil {
+		t.Error(err)
+	}
+	err = c.SendImageMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "@lADOHrf_oVxc")
 	if err != nil {
 		t.Error(err)
 	}

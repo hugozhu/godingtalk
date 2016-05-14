@@ -3,6 +3,7 @@ package godingtalk
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"time"
@@ -25,6 +26,7 @@ type DingTalkClient struct {
 //Unmarshallable is
 type Unmarshallable interface {
 	checkError() error
+	getWriter() io.Writer
 }
 
 //OAPIResponse is
@@ -38,6 +40,10 @@ func (data *OAPIResponse) checkError() (err error) {
 		err = fmt.Errorf("%d: %s", data.ErrCode, data.ErrMsg)
 	}
 	return err
+}
+
+func (data *OAPIResponse) getWriter() io.Writer {
+	return nil
 }
 
 //AccessTokenResponse is

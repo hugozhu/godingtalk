@@ -11,11 +11,20 @@ import (
 	"net/url"
 )
 
+const typeJSON = "application/json"
+
 //UploadFile is for uploading a single file to DingTalk
 type UploadFile struct {
 	FieldName string
 	FileName  string
 	Reader    io.Reader
+}
+
+//DownloadFile is for downloading a single file from DingTalk
+type DownloadFile struct {
+	MediaID  string
+	FileName string
+	Reader   io.Reader
 }
 
 func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData interface{}, responseData Unmarshallable) error {
@@ -53,7 +62,7 @@ func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData int
 		default:
 			d, _ := json.Marshal(requestData)
 			request, _ = http.NewRequest("POST", url2, bytes.NewReader(d))
-			request.Header.Set("Content-Type", "application/json")
+			request.Header.Set("Content-Type", typeJSON)
 		}
 	} else {
 		request, _ = http.NewRequest("GET", url2, nil)
@@ -63,11 +72,18 @@ func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData int
 		return err
 	}
 	defer resp.Body.Close()
-	content, err := ioutil.ReadAll(resp.Body)
-	if err == nil {
-		// log.Println("response:", string(content))
-		json.Unmarshal(content, responseData)
-		err = responseData.checkError()
+	contentType := resp.Header.Get("Content-Type")
+	pos := len(typeJSON)
+	if len(contentType) >= pos && contentType[0:pos] == typeJSON {
+		content, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			// log.Printf("url: %s response: %s", url2, string(content))
+			json.Unmarshal(content, responseData)
+			return responseData.checkError()
+		}
+	} else {
+		io.Copy(responseData.getWriter(), resp.Body)
+		return responseData.checkError()
 	}
 	return err
 }
