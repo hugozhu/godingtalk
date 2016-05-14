@@ -10,6 +10,9 @@ import (
 )
 
 const (
+	//VERSION is SDK version
+	VERSION = "0.1"
+
 	//ROOT is the root url
 	ROOT = "https://oapi.dingtalk.com/"
 )

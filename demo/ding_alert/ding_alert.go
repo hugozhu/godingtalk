@@ -18,6 +18,8 @@ var chatID string
 var content string
 var link string
 var file string
+var title string
+var text string
 
 func init() {
 	flag.StringVar(&msgType, "type", "app", "message type (app, text, image, voice, link, oa)")
@@ -27,6 +29,8 @@ func init() {
 	flag.StringVar(&chatID, "chat", "chat6a93bc1ee3b7d660d372b1b877a9de62", "chat id")
 	flag.StringVar(&link, "link", "http://hugozhu.myalert.info/dingtalk", "link url")
 	flag.StringVar(&file, "file", "", "file path for media message")
+	flag.StringVar(&title, "title", "This is link title", "title for link message")
+	flag.StringVar(&text, "text", "This is link text", "text for link message")
 	flag.Parse()
 }
 
@@ -117,7 +121,7 @@ func main() {
 		if err != nil {
 			fatalError(err)
 		}
-		err = c.SendLinkMessage(senderID, chatID, media.MediaID, "http://www.baidu.com/", "Baidu.com", "this is baidu")
+		err = c.SendLinkMessage(senderID, chatID, media.MediaID, link, title, text)
 		if err != nil {
 			fatalError(err)
 		}

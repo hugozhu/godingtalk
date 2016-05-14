@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -63,7 +62,7 @@ func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData int
 		default:
 			d, _ := json.Marshal(requestData)
 			request, _ = http.NewRequest("POST", url2, bytes.NewReader(d))
-			log.Printf("url: %s request: %s", url2, string(d))
+			// log.Printf("url: %s request: %s", url2, string(d))
 			request.Header.Set("Content-Type", typeJSON)
 		}
 	} else {
