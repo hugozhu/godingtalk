@@ -102,20 +102,24 @@ type OAMessage struct {
 		Text    string `json:"text,omitempty"`
 	} `json:"head,omitempty"`
 	Body struct {
-		Title string `json:"title,omitempty"`
-		Form  []struct {
-			Key   string `json:"key,omitempty"`
-			Value string `json:"value,omitempty"`
-		} `json:"form,omitempty"`
-		Rich struct {
-			Num  string `json:"num,omitempty"`
-			Unit string `json:"body,omitempty"`
-		} `json:"rich,omitempty"`
-		Content   string `json:"content,omitempty"`
-		Image     string `json:"image,omitempty"`
-		FileCount int    `json:"file_count,omitempty"`
-		Author    string `json:"author,omitempty"`
+		Title     string          `json:"title,omitempty"`
+		Form      []OAMessageForm `json:"form,omitempty"`
+		Rich      OAMessageRich   `json:"rich,omitempty"`
+		Content   string          `json:"content,omitempty"`
+		Image     string          `json:"image,omitempty"`
+		FileCount int             `json:"file_count,omitempty"`
+		Author    string          `json:"author,omitempty"`
 	} `json:"body,omitempty"`
+}
+
+type OAMessageForm struct {
+	Key   string `json:"key,omitempty"`
+	Value string `json:"value,omitempty"`
+}
+
+type OAMessageRich struct {
+	Num  string `json:"num,omitempty"`
+	Unit string `json:"body,omitempty"`
 }
 
 //SendOAMessage is 发送OA消息
