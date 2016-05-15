@@ -24,6 +24,7 @@ type DingTalkClient struct {
 	AgentID     string
 	AccessToken string
 	HTTPClient  *http.Client
+	Cache       Cache
 }
 
 //Unmarshallable is
@@ -93,14 +94,14 @@ func NewDingTalkClient(corpID string, corpSecret string) *DingTalkClient {
 	c.HTTPClient = &http.Client{
 		Timeout: 10 * time.Second,
 	}
+	c.Cache = NewFileCache(".auth_file")
 	return c
 }
 
 //RefreshAccessToken is to get a valid access token
 func (c *DingTalkClient) RefreshAccessToken() error {
 	var data AccessTokenResponse
-	cache := NewFileCache(".auth_file")
-	err := cache.Get(&data)
+	err := c.Cache.Get(&data)
 	if err == nil {
 		c.AccessToken = data.AccessToken
 		return nil
@@ -115,7 +116,7 @@ func (c *DingTalkClient) RefreshAccessToken() error {
 		if err == nil {
 			data.Expires = data.Expires | 7200
 			data.Created = time.Now().Unix()
-			cache.Set(&data)
+			c.Cache.Set(&data)
 		}
 	}
 	return err

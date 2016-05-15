@@ -14,12 +14,17 @@ type Expirable interface {
 	ExpiresIn() int
 }
 
+type Cache interface {
+	Set(data Expirable) error
+	Get(data Expirable) error
+}
+
 type FileCache struct {
 	Path string
 }
 
-func NewFileCache(path string) FileCache {
-	return FileCache{
+func NewFileCache(path string) *FileCache {
+	return &FileCache{
 		Path: path,
 	}
 }
