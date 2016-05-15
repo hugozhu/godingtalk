@@ -23,9 +23,6 @@ import (
 	"encoding/hex"
 )
 
-const CHAT_ID = "chat6a93bc1ee3b7d660d372b1b877a9de62"
-const SENDER_ID = "011217462940"
-
 //Handle 处理Github的Webhook Events
 func Handle(w http.ResponseWriter, r *http.Request) {
 	var err error
@@ -86,7 +83,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 	msg.Body.Author = *event.Sender.Login
 
-	err = c.SendOAMessage(SENDER_ID, CHAT_ID, msg)
+	err = c.SendOAMessage(os.Getenv("SENDER_ID"), os.Getenv("CHAT_ID"), msg)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%v", err), http.StatusInternalServerError)
 	} else if refresh_token_error != nil {
