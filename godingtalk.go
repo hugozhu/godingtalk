@@ -113,11 +113,9 @@ func (c *DingTalkClient) RefreshAccessToken() error {
 	err = c.httpRPC("gettoken", params, nil, &data)
 	if err == nil {
 		c.AccessToken = data.AccessToken
-		if err == nil {
-			data.Expires = data.Expires | 7200
-			data.Created = time.Now().Unix()
-			c.Cache.Set(&data)
-		}
+		data.Expires = data.Expires | 7200
+		data.Created = time.Now().Unix()
+		err = c.Cache.Set(&data)
 	}
 	return err
 }
