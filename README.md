@@ -73,3 +73,34 @@ Usage of ./bin/ding_alert:
     	message type (app, text, image, voice, link, oa) (default "app")
 
 ```
+
+github: Deliver Github webhook events to DingTalk, which can be deployed on Google AppEngine
+
+```
+export GOPATH=`pwd`
+go get github.com/hugozhu/godingtalk/demo/github/appengine
+```
+
+Modify `app.yaml`
+
+```
+cd src/github.com/hugozhu/godingtalk/demo/github/appengine
+cat app.yaml
+application: github-alert-<random_number>
+version: 1
+runtime: go
+api_version: go1
+env_variables:
+  CORP_ID: '<从 http://oa.dingtalk.com 获取>'
+  CORP_SECRET: '<从 http://oa.dingtalk.com 获取>'
+  GITHUB_WEBHOOK_SECRET: '<从 http://github.com/ 获取>'
+  SENDER_ID: '<从 http://open.dingtalk.com 调用api获取>'
+  CHAT_ID: '<从 http://open.dingtalk.com 调用api获取>'
+handlers:
+- url: /.*
+  script: _go_app
+
+```
+
+
+
