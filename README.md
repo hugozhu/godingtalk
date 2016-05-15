@@ -42,7 +42,7 @@ http://hugozhu.myalert.info/2016/05/02/66-use-dingtalk-golang-sdk-to-send-messag
 
 ## Tools
 
-ding_alert: Command line tool to send app/text/oa ... messages
+**ding_alert** : Command line tool to send app/text/oa ... messages
 
 ```
 export GOPATH=`pwd`
@@ -74,7 +74,7 @@ Usage of ./bin/ding_alert:
 
 ```
 
-github: Deliver Github webhook events to DingTalk, which can be deployed on Google AppEngine
+**github**: Deliver Github webhook events to DingTalk, which can be deployed on Google AppEngine
 
 ```
 export GOPATH=`pwd`
