@@ -74,7 +74,8 @@ Usage of ./bin/ding_alert:
 
 ```
 
-**github**: Deliver Github webhook events to DingTalk, which can be deployed on Google AppEngine
+**github**: Deliver Github webhook events to DingTalk, which can be deployed on Google AppEngine.
+
 more info at: http://hugozhu.myalert.info/2016/05/15/67-use-free-google-cloud-service-to-deliver-github-webhook-events-to-dingtalk.html
 
 ```
