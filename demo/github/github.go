@@ -59,9 +59,19 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		msg.Body.Title = "[" + *event.Repo.Name + "] Push"
 		msg.URL = *event.Compare
 		for _, commit := range event.Commits {
+			value := *commit.Message
+			if len(commit.Added) > 0 {
+				value = value + "\n Added: " + strings.Join(commit.Added, ", ")
+			}
+			if len(commit.Modified) > 0 {
+				value = value + "\n Modified: " + strings.Join(commit.Modified, ", ")
+			}
+			if len(commit.Removed) > 0 {
+				value = value + "\n Removed: " + strings.Join(commit.Removed, ", ")
+			}
 			msg.Body.Form = append(msg.Body.Form, godingtalk.OAMessageForm{
 				Key:   "Commits: ",
-				Value: *commit.Message + "\n Modified: " + strings.Join(commit.Modified, ","),
+				Value: value,
 			})
 		}
 	case "watch":
