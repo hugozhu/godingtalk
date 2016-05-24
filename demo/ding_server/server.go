@@ -27,9 +27,7 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Println(os.Getwd())
-
-	fs := http.FileServer(http.Dir("public"))
+	fs := http.FileServer(path.Join(os.Getenv("root"), "public"))
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
 	http.HandleFunc("/", serveTemplate)
 	http.ListenAndServe(":8000", nil)

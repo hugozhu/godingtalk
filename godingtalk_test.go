@@ -6,11 +6,9 @@ import (
 )
 
 var c *DingTalkClient
-var DingTalk *DingTalkClient
 
 func init() {
 	c = NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
-	DingTalk = c
 	err := c.RefreshAccessToken()
 	if err != nil {
 		panic(err)
