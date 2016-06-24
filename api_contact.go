@@ -73,7 +73,7 @@ func (c *DingTalkClient) UserList(departmentID int) (UserList, error) {
     var data UserList
     params := url.Values{}
     params.Add("department_id", fmt.Sprintf("%d", departmentID))    
-    err :=c.httpRPC("user/simplelist", params, nil, &data)
+    err :=c.httpRPC("user/list", params, nil, &data)
     return data, err
 }
 
