@@ -16,6 +16,8 @@ type User struct {
     IsAdmin bool
     IsBoss bool
     IsLeader bool
+	IsSys bool `json:"is_sys"`
+	SysLevel int `json:"sys_level"`
     Active bool
     Department []int
     Position string
@@ -88,4 +90,13 @@ func (c *DingTalkClient) CreateChat(name string, owner string, useridlist []stri
     }
     err :=c.httpRPC("chat/create", nil, request, &data)
     return data.Chatid, err
+}
+
+//UserInfoByCode 校验免登录码并换取用户身份
+func (c *DingTalkClient) UserInfoByCode(code string) (User, error) {
+    var data User
+    params := url.Values{}
+    params.Add("code", code)
+    err :=c.httpRPC("user/getuserinfo", params, nil, &data)
+    return data, err
 }
