@@ -18,6 +18,27 @@ func (c *DingTalkClient) SendAppMessage(agentID string, touser string, msg strin
 	return err
 }
 
+//SendAppLinkMessage is 发送企业会话链接消息
+func (c *DingTalkClient) SendAppLinkMessage(agentID, touser string, title, text string, picUrl, url string) error {
+	if agentID == "" {
+		agentID = c.AgentID
+	}
+	var data OAPIResponse
+	request := map[string]interface{}{
+		"touser":  touser,
+		"agentid": agentID,
+		"msgtype": "text",
+		"link": map[string]string{
+			"messageUrl": url,
+			"picUrl":     picUrl,
+			"title":      title,
+			"text":       text,
+		},
+	}
+	err := c.httpRPC("message/send", nil, request, &data)
+	return err
+}
+
 //SendTextMessage is 发送普通文本消息
 func (c *DingTalkClient) SendTextMessage(sender string, cid string, msg string) error {
 	var data OAPIResponse
