@@ -7,8 +7,9 @@ import (
 	"fmt"
 	"time"
 	"path"
+	"encoding/json"
 
-	"github.com/hugozhu/godingtalk"
+	"github.com/athurg/godingtalk"
 )
 
 func GetTemplate(tpl string) *template.Template {
@@ -17,6 +18,16 @@ func GetTemplate(tpl string) *template.Template {
 }
 
 var client *godingtalk.DingTalkClient
+
+func getUserInfo(w http.ResponseWriter, r *http.Request) {
+	code := r.FormValue("code")
+
+	client.RefreshAccessToken()
+	info,_ := client.UserInfoByCode(code)
+
+	json.NewEncoder(w).Encode(info)
+}
+
 func serveTemplate(w http.ResponseWriter, r *http.Request) {
 	lp := path.Join("templates", "layout.html")
 	fp := path.Join("templates", "index.html")
@@ -48,5 +59,7 @@ func main() {
 	fs := http.FileServer(http.Dir(path.Join(os.Getenv("root"), "public")))
 	http.Handle("/public/", http.StripPrefix("/public/", fs))
 	http.HandleFunc("/", serveTemplate)
+	http.HandleFunc("/get_user_info", getUserInfo)
+
 	http.ListenAndServe(":8000", nil)
 }

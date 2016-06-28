@@ -47,19 +47,18 @@ dd.ready(function() {
         onSuccess: function (info) {
             logger.i('authcode: ' + info.code);
             $.ajax({
-                url: '/sendMsg.php',
+                url: '/get_user_info',
                 type:"POST",
-                data: {"event":"get_userinfo","code":info.code},
+                data: {"code":info.code},
                 dataType:'json',
                 timeout: 900,
-                success: function (data, status, xhr) {
-                    var info = JSON.parse(data);
+                success: function (info, status, xhr) {
                     if (info.errcode === 0) {
-                        logger.i('user id: ' + info.userid);
-                        dd.userid = info.userid;
+                        logger.i('user id: ' + info.Userid);
+                        dd.userid = info.Userid;
                     }
                     else {
-                        logger.e('auth error: ' + data);
+                        logger.e('auth error: ' + JSON.stringify(info));
                     }
                 },
                 error: function (xhr, errorType, error) {
