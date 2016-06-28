@@ -1,13 +1,13 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
-	"fmt"
-	"time"
 	"path"
-	"encoding/json"
+	"time"
 
 	"github.com/hugozhu/godingtalk"
 )
@@ -23,7 +23,7 @@ func getUserInfo(w http.ResponseWriter, r *http.Request) {
 	code := r.FormValue("code")
 
 	client.RefreshAccessToken()
-	info,_ := client.UserInfoByCode(code)
+	info, _ := client.UserInfoByCode(code)
 
 	json.NewEncoder(w).Encode(info)
 }
@@ -33,14 +33,14 @@ func sendMessage(w http.ResponseWriter, r *http.Request) {
 	sender := r.FormValue("sender")
 	content := r.FormValue("content")
 
-	var resp struct{
-		ErrCode int `json:"errcode"`
-		ErrMsg string `json:"errmsg"`
+	var resp struct {
+		ErrCode int    `json:"errcode"`
+		ErrMsg  string `json:"errmsg"`
 	}
 
 	client.RefreshAccessToken()
 	err := client.SendTextMessage(sender, chatid, content)
-	if err!=nil {
+	if err != nil {
 		resp.ErrCode = -1
 		resp.ErrMsg = err.Error()
 	}
