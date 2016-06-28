@@ -9,7 +9,7 @@ import (
 	"path"
 	"encoding/json"
 
-	"github.com/athurg/godingtalk"
+	"github.com/hugozhu/godingtalk"
 )
 
 func GetTemplate(tpl string) *template.Template {
