@@ -18,6 +18,22 @@ func (c *DingTalkClient) SendAppMessage(agentID string, touser string, msg strin
 	return err
 }
 
+//SendAppOAMessage is 发送OA消息
+func (c *DingTalkClient) SendAppOAMessage(agentID string, touser string, msg OAMessage) error {
+	if agentID == "" {
+		agentID = c.AgentID
+	}
+	var data OAPIResponse
+	request := map[string]interface{}{
+		"touser":  touser,
+		"agentid": agentID,
+		"msgtype": "oa",
+		"oa": msg,
+	}
+	err := c.httpRPC("message/send", nil, request, &data)
+	return err
+}
+
 //SendAppLinkMessage is 发送企业会话链接消息
 func (c *DingTalkClient) SendAppLinkMessage(agentID, touser string, title, text string, picUrl, url string) error {
 	if agentID == "" {
@@ -121,6 +137,7 @@ func (c *DingTalkClient) SendLinkMessage(sender string, cid string, mediaID stri
 //OAMessage is the Message for OA
 type OAMessage struct {
 	URL  string `json:"message_url"`
+	PcURL string `json:"pc_message_url"`
 	Head struct {
 		BgColor string `json:"bgcolor,omitempty"`
 		Text    string `json:"text,omitempty"`
