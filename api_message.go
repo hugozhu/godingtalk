@@ -163,6 +163,16 @@ type OAMessageRich struct {
 	Unit string `json:"body,omitempty"`
 }
 
+func (m *OAMessage) AppendFormItem(key string, value string) {
+	f := OAMessageForm{Key: key, Value: value}
+
+	if m.Body.Form == nil {
+		m.Body.Form = []OAMessageForm{}
+	}
+
+	m.Body.Form = append(m.Body.Form, f)
+}
+
 //SendOAMessage is 发送OA消息
 func (c *DingTalkClient) SendOAMessage(sender string, cid string, msg OAMessage) error {
 	var data OAPIResponse
