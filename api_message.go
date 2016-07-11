@@ -27,7 +27,7 @@ func (c *DingTalkClient) SendAppLinkMessage(agentID, touser string, title, text 
 	request := map[string]interface{}{
 		"touser":  touser,
 		"agentid": agentID,
-		"msgtype": "text",
+		"msgtype": "link",
 		"link": map[string]string{
 			"messageUrl": url,
 			"picUrl":     picUrl,
