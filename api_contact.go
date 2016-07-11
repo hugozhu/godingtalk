@@ -100,3 +100,20 @@ func (c *DingTalkClient) UserInfoByCode(code string) (User, error) {
     err :=c.httpRPC("user/getuserinfo", params, nil, &data)
     return data, err
 }
+
+//UseridByUnionId 通过UnionId获取玩家Userid
+func (c *DingTalkClient) UseridByUnionId(unionid string) (string, error) {
+    var data struct {
+		OAPIResponse
+		UserID string `json:"userid"`
+	}
+
+    params := url.Values{}
+    params.Add("unionid", unionid)
+    err :=c.httpRPC("user/getUseridByUnionid", params, nil, &data)
+	if err!=nil {
+		return "",err
+	}
+
+    return data.UserID, err
+}
