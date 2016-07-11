@@ -69,7 +69,7 @@ func (c *InMemoryCache) Set(data Expirable) error {
 }
 
 func (c *InMemoryCache) Get(data Expirable) error {
-	err = json.Unmarshal(c.data, data)
+	err := json.Unmarshal(c.data, data)
 	if err == nil {
 		created := data.CreatedAt()
 		expires := data.ExpiresIn()
