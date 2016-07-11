@@ -19,7 +19,7 @@ dd.config({
     jsApiList: [
         'runtime.info',
         'device.notification.prompt',
-        'biz.chat.pickConversation',
+        'biz.chat.chooseConversationByCorpId',
         'device.notification.confirm',
         'device.notification.alert',
         'device.notification.prompt',
@@ -47,19 +47,18 @@ dd.ready(function() {
         onSuccess: function (info) {
             logger.i('authcode: ' + info.code);
             $.ajax({
-                url: '/sendMsg.php',
+                url: '/get_user_info',
                 type:"POST",
-                data: {"event":"get_userinfo","code":info.code},
+                data: {"code":info.code},
                 dataType:'json',
                 timeout: 900,
-                success: function (data, status, xhr) {
-                    var info = JSON.parse(data);
+                success: function (info, status, xhr) {
                     if (info.errcode === 0) {
-                        logger.i('user id: ' + info.userid);
-                        dd.userid = info.userid;
+                        logger.i('user id: ' + info.Userid);
+                        dd.userid = info.Userid;
                     }
                     else {
-                        logger.e('auth error: ' + data);
+                        logger.e('auth error: ' + JSON.stringify(info));
                     }
                 },
                 error: function (xhr, errorType, error) {
@@ -81,14 +80,13 @@ dd.ready(function() {
         }
     });
     $('.chooseonebtn').on('click', function() {
-        dd.biz.chat.pickConversation({
+        dd.biz.chat.chooseConversationByCorpId({
             corpId: _config.corpId, //企业id
-            isConfirm:'false', //是否弹出确认窗口，默认为true
             onSuccess: function (data) {
                 var chatinfo = data;
                 if(chatinfo){
-                    console.log(chatinfo.cid);
-                    logger.i("cid: "+chatinfo.cid+"\nsender: "+dd.userid+"\n"+JSON.stringify(data))
+                    console.log(chatinfo.chatId);
+                    logger.i("cid: "+chatinfo.chatId+"\nsender: "+dd.userid+"\n"+JSON.stringify(data))
                     dd.device.notification.prompt({
                         message: "发送消息",
                         title: chatinfo.title,
@@ -99,14 +97,13 @@ dd.ready(function() {
                                 return false;
                             }
                             $.ajax({
-                                url: '/dingtalk/demo/sendMsg.php',
+                                url: '/send_message',
                                 type:"POST",
-                                data: {"event":"send_to_conversation","cid":chatinfo.cid,"sender":dd.userid,"content":text},
+                                data: {"cid":chatinfo.chatId,"sender":dd.userid,"content":text},
                                 dataType:'json',
                                 timeout: 900,
-                                success: function (data, status, xhr) {
-                                    var info = data;
-                                    logger.i('sendMsg: ' + JSON.stringify(data));
+                                success: function (info, status, xhr) {
+                                    logger.i('sendMsg: ' + JSON.stringify(info));
                                     if(info.errcode==0){
                                         logger.i('sendMsg: 发送成功');
                                         /**
