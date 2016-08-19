@@ -20,8 +20,12 @@ var link string
 var file string
 var title string
 var text string
+var robot bool
+var token string
 
 func init() {
+	flag.BoolVar(&robot,"robot", false,"use robot api?")
+	flag.StringVar(&token,"token", "" ,"robot access token or token to override env setting")
 	flag.StringVar(&msgType, "type", "app", "message type (app, text, image, voice, link, oa)")
 	flag.StringVar(&agentID, "agent", "22194403", "agent Id")
 	flag.StringVar(&senderID, "sender", "011217462940", "sender id")
@@ -56,7 +60,11 @@ func main() {
 	case "app":
 		err = c.SendAppMessage(agentID, toUser, content)
 	case "text":
-		err = c.SendTextMessage(senderID, chatID, content)
+		if (robot) {
+			err = c.SendRobotTextMessage(token, content)
+		} else {
+			err = c.SendTextMessage(senderID, chatID, content)
+		}
 	case "image":
 		if file == "" {
 			panic("Image path is empty")
