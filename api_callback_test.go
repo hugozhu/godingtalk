@@ -5,7 +5,7 @@ import (
 )
 
 func TestRegisterCallback(t *testing.T) {
-	err := c.UpdateCallback([]string{"user_modify_org"}, "hello", "1234567890123456789012345678901234567890aes", "https://myalert.info/dingtalk/callback/")
+	err := c.UpdateCallback([]string{"user_modify_org"}, "hello", "1234567890123456789012345678901234567890aes", "https://go.myalert.info/dingtalk/callback/")
 	if err != nil {
 		t.Error(err)
 	}
@@ -13,7 +13,7 @@ func TestRegisterCallback(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	err = c.RegisterCallback([]string{"user_add_org"}, "hello", "1234567890123456789012345678901234567890aes", "https://myalert.info/dingtalk/callback/")
+	err = c.RegisterCallback([]string{"user_add_org"}, "hello", "1234567890123456789012345678901234567890aes", "https://go.myalert.info/dingtalk/callback/")
 	if err != nil {
 		t.Error(err)
 	}

@@ -32,7 +32,9 @@ func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData int
 		if params == nil {
 			params = url.Values{}
 		}
-		params.Set("access_token", c.AccessToken)
+		if (params.Get("access_token")=="") {
+			params.Set("access_token", c.AccessToken)
+		}
 	}
 	return c.httpRequest(path, params, requestData, responseData)
 }

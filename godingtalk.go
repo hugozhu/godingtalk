@@ -29,7 +29,7 @@ type DingTalkClient struct {
 	//社交相关的属性
 	SnsAppID string
 	SnsAppSecret string
-	SnsAccessToken string
+	SnsAccessToken string	
 }
 
 //Unmarshallable is
