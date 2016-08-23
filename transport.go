@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -32,7 +33,7 @@ func (c *DingTalkClient) httpRPC(path string, params url.Values, requestData int
 		if params == nil {
 			params = url.Values{}
 		}
-		if (params.Get("access_token")=="") {
+		if params.Get("access_token") == "" {
 			params.Set("access_token", c.AccessToken)
 		}
 	}
@@ -67,24 +68,30 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 			request.Header.Set("Content-Type", w.FormDataContentType())
 		default:
 			d, _ := json.Marshal(requestData)
-			request, _ = http.NewRequest("POST", url2, bytes.NewReader(d))
 			// log.Printf("url: %s request: %s", url2, string(d))
+			request, _ = http.NewRequest("POST", url2, bytes.NewReader(d))
 			request.Header.Set("Content-Type", typeJSON)
 		}
 	} else {
+		// log.Printf("url: %s", url2)
 		request, _ = http.NewRequest("GET", url2, nil)
 	}
 	resp, err := client.Do(request)
 	if err != nil {
 		return err
 	}
+
+	if resp.StatusCode != 200 {
+		return errors.New("Server error: " + resp.Status)
+	}
+
 	defer resp.Body.Close()
 	contentType := resp.Header.Get("Content-Type")
+	log.Printf("url: %s response content type: %s", url2, contentType)
 	pos := len(typeJSON)
 	if len(contentType) >= pos && contentType[0:pos] == typeJSON {
 		content, err := ioutil.ReadAll(resp.Body)
 		if err == nil {
-			// log.Printf("url: %s response: %s", url2, string(content))
 			json.Unmarshal(content, responseData)
 			return responseData.checkError()
 		}
