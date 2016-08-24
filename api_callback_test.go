@@ -1,12 +1,28 @@
 package godingtalk
 
 import (
-    "testing"
+	"testing"
 )
 
 func TestRegisterCallback(t *testing.T) {
-    err:=c.RegisterCallback([]string{"user_add_org"},"hello","http://www.dingtalk.com")
-    if err!=nil {
-        t.Error(err)
-    }
+	err := c.UpdateCallback([]string{"user_modify_org"}, "hello", "1234567890123456789012345678901234567890aes", "https://go.myalert.info/dingtalk/callback/")
+	if err != nil {
+		t.Error(err)
+	}
+	err = c.DeleteCallback()
+	if err != nil {
+		t.Error(err)
+	}
+	err = c.RegisterCallback([]string{"user_add_org"}, "hello", "1234567890123456789012345678901234567890aes", "https://go.myalert.info/dingtalk/callback/")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestListCallback(t *testing.T) {
+	data, err := c.ListCallback()
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(data)
 }

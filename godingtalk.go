@@ -25,6 +25,11 @@ type DingTalkClient struct {
 	AccessToken string
 	HTTPClient  *http.Client
 	Cache       Cache
+
+	//社交相关的属性
+	SnsAppID string
+	SnsAppSecret string
+	SnsAccessToken string	
 }
 
 //Unmarshallable is

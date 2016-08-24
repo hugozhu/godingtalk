@@ -16,6 +16,8 @@ type User struct {
     IsAdmin bool
     IsBoss bool
     IsLeader bool
+	IsSys bool `json:"is_sys"`
+	SysLevel int `json:"sys_level"`
     Active bool
     Department []int
     Position string
@@ -71,7 +73,7 @@ func (c *DingTalkClient) UserList(departmentID int) (UserList, error) {
     var data UserList
     params := url.Values{}
     params.Add("department_id", fmt.Sprintf("%d", departmentID))    
-    err :=c.httpRPC("user/simplelist", params, nil, &data)
+    err :=c.httpRPC("user/list", params, nil, &data)
     return data, err
 }
 
@@ -88,4 +90,30 @@ func (c *DingTalkClient) CreateChat(name string, owner string, useridlist []stri
     }
     err :=c.httpRPC("chat/create", nil, request, &data)
     return data.Chatid, err
+}
+
+//UserInfoByCode 校验免登录码并换取用户身份
+func (c *DingTalkClient) UserInfoByCode(code string) (User, error) {
+    var data User
+    params := url.Values{}
+    params.Add("code", code)
+    err :=c.httpRPC("user/getuserinfo", params, nil, &data)
+    return data, err
+}
+
+//UseridByUnionId 通过UnionId获取玩家Userid
+func (c *DingTalkClient) UseridByUnionId(unionid string) (string, error) {
+    var data struct {
+		OAPIResponse
+		UserID string `json:"userid"`
+	}
+
+    params := url.Values{}
+    params.Add("unionid", unionid)
+    err :=c.httpRPC("user/getUseridByUnionid", params, nil, &data)
+	if err!=nil {
+		return "",err
+	}
+
+    return data.UserID, err
 }

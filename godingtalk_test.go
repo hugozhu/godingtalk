@@ -127,3 +127,11 @@ func TestVoiceMessage(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+
+func TestRobotMessage(t *testing.T) {
+	err := c.SendRobotTextMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息")
+	if err != nil {
+		t.Error(err)
+	}
+}
