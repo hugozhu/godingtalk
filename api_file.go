@@ -7,6 +7,11 @@ import (
 	"net/url"
 )
 
+/**
+ * https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.UeYQVr&treeId=172&articleId=104970&docType=1
+ * TODO: not completed yet
+ **/
+
 //FileResponse is
 type FileResponse struct {
 	OAPIResponse

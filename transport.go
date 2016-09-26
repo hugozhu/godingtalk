@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -87,7 +86,7 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 
 	defer resp.Body.Close()
 	contentType := resp.Header.Get("Content-Type")
-	log.Printf("url: %s response content type: %s", url2, contentType)
+	//log.Printf("url: %s response content type: %s", url2, contentType)
 	pos := len(typeJSON)
 	if len(contentType) >= pos && contentType[0:pos] == typeJSON {
 		content, err := ioutil.ReadAll(resp.Body)
