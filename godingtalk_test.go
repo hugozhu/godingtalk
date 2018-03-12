@@ -43,12 +43,14 @@ func TestDepartmentApi(t *testing.T) {
 	}
 }
 
+/*
 func TestJsAPITicket(t *testing.T) {
 	ticket, err := c.GetJsAPITicket()
 	if err != nil || ticket == "" {
 		t.Error("JsAPITicket error", err)
 	}
 }
+*/
 
 func TestCreateChat(t *testing.T) {
 	// chatid, err := c.CreateChat("Test chat", "0420506555", []string{"0420506555"})
@@ -127,7 +129,6 @@ func TestVoiceMessage(t *testing.T) {
 		t.Error(err)
 	}
 }
-
 
 func TestRobotMessage(t *testing.T) {
 	err := c.SendRobotTextMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息")
