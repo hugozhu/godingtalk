@@ -33,7 +33,7 @@ func TestDepartmentApi(t *testing.T) {
 
 	for _, department := range departments.Departments {
 		t.Logf("dept: %v", department)
-		list, err := c.UserList(department.Id)
+		list, err := c.UserList(department.Id, 0, 100)
 		if err != nil {
 			t.Error(err)
 		}
