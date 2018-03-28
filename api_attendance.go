@@ -13,7 +13,7 @@ import (
 
 type Attendance struct {
 	GmtModifed      int64   `json:"gmtModified"`    //: 1492594486000,
-	IsLegal         string  `json:"isLegal": "N"`   //: "N",
+	IsLegal         string  `json:"isLegal"`        //: "N",
 	BaseCheckTime   int64   `json:"baseCheckTime"`  //: 1492568460000,
 	ID              int64   `json:"id"`             //: 933202551,
 	UserAddress     string  `json:"userAddress"`    //: "北京市朝阳区崔各庄镇阿里中心.望京A座阿里巴巴绿地中心",
