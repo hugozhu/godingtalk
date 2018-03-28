@@ -33,7 +33,7 @@ func TestDepartmentApi(t *testing.T) {
 
 	for _, department := range departments.Departments {
 		t.Logf("dept: %v", department)
-		list, err := c.UserList(department.Id)
+		list, err := c.UserList(department.Id, 0, 100)
 		if err != nil {
 			t.Error(err)
 		}
@@ -43,14 +43,12 @@ func TestDepartmentApi(t *testing.T) {
 	}
 }
 
-/*
 func TestJsAPITicket(t *testing.T) {
 	ticket, err := c.GetJsAPITicket()
 	if err != nil || ticket == "" {
 		t.Error("JsAPITicket error", err)
 	}
 }
-*/
 
 func TestCreateChat(t *testing.T) {
 	// chatid, err := c.CreateChat("Test chat", "0420506555", []string{"0420506555"})
