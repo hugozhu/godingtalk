@@ -30,7 +30,7 @@ type topAPIErrResponse struct {
 	ERR struct {
 		Code      int    `json:"code"`
 		Msg       string `json:"msg"`
-		SubCode   int    `json:"sub_code"`
+		SubCode   string    `json:"sub_code"`
 		SubMsg    string `json:"sub_msg"`
 		RequestID string `json:"request_id"`
 	} `json:"error_response"`
