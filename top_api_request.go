@@ -37,7 +37,7 @@ type topAPIErrResponse struct {
 }
 
 func (data *topAPIErrResponse) checkError() (err error) {
-	if data.ERR.Code != 0 || data.ERR.SubCode != 0 {
+	if data.ERR.Code != 0 || len(data.ERR.SubCode) != 0 {
 		err = fmt.Errorf("%#v", data.ERR)
 	}
 	return err
