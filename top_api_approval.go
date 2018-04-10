@@ -131,6 +131,10 @@ func (c *DingTalkClient) TopAPIGetProcInst(pid string) (ProcInst, error) {
 	reqForm.Add("process_instance_id", pid)
 	reqForm.Add("method", topAPIGetProcInstMethod)
 	err := c.topAPIRequest(reqForm, &resp)
+	if err != nil {
+		return resp.Ok.ProcInst, err
+	}
+	resp.Ok.ProcInst.ProcInstID = pid
 	return resp.Ok.ProcInst, err
 }
 
