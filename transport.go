@@ -47,7 +47,6 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 		switch requestData.(type) {
 		case UploadFile:
 			var b bytes.Buffer
-			request, _ = http.NewRequest("POST", url2, &b)
 			w := multipart.NewWriter(&b)
 
 			uploadFile := requestData.(UploadFile)
@@ -64,6 +63,7 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 			if err = w.Close(); err != nil {
 				return err
 			}
+			request, _ = http.NewRequest("POST", url2, &b)
 			request.Header.Set("Content-Type", w.FormDataContentType())
 		default:
 			d, _ := json.Marshal(requestData)
