@@ -90,6 +90,7 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 	pos := len(typeJSON)
 	if len(contentType) >= pos && contentType[0:pos] == typeJSON {
 		content, err := ioutil.ReadAll(resp.Body)
+		//log.Println(string(content))
 		if err == nil {
 			json.Unmarshal(content, responseData)
 			return responseData.checkError()

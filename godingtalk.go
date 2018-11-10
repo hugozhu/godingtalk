@@ -27,9 +27,9 @@ type DingTalkClient struct {
 	Cache       Cache
 
 	//社交相关的属性
-	SnsAppID string
-	SnsAppSecret string
-	SnsAccessToken string	
+	SnsAppID       string
+	SnsAppSecret   string
+	SnsAccessToken string
 }
 
 //Unmarshallable is
@@ -53,6 +53,12 @@ func (data *OAPIResponse) checkError() (err error) {
 
 func (data *OAPIResponse) getWriter() io.Writer {
 	return nil
+}
+
+//MessageResponse is
+type MessageResponse struct {
+	OAPIResponse
+	MessageID string `json:"messageId"`
 }
 
 //AccessTokenResponse is
