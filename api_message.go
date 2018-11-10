@@ -1,5 +1,7 @@
 package godingtalk
 
+import "net/url"
+
 //SendAppMessage is 发送企业会话消息
 func (c *DingTalkClient) SendAppMessage(agentID string, touser string, msg string) error {
 	if agentID == "" {
@@ -177,5 +179,15 @@ func (c *DingTalkClient) SendOAMessage(sender string, cid string, msg OAMessage)
 		"oa":      msg,
 	}
 	err = c.httpRPC("chat/send", nil, request, &data)
+	return data, err
+}
+
+//GetMessageReadList is 获取已读列表
+func (c *DingTalkClient) GetMessageReadList(messageID string, cursor int, size int) (data MessageReadListResponse, err error) {
+	params := url.Values{}
+	params.Add("messageId", messageID)
+	params.Add("cursor", string(cursor))
+	params.Add("size", string(size))
+	err = c.httpRPC("chat/getReadList", params, nil, &data)
 	return data, err
 }

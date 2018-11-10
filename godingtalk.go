@@ -61,6 +61,13 @@ type MessageResponse struct {
 	MessageID string `json:"messageId"`
 }
 
+//MessageResponse is
+type MessageReadListResponse struct {
+	OAPIResponse
+	NextCursor     int64    `json:"next_cursor"`
+	ReadUserIdList []string `json:"readUserIdList"`
+}
+
 //AccessTokenResponse is
 type AccessTokenResponse struct {
 	OAPIResponse
