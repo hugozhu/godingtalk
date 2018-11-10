@@ -66,7 +66,7 @@ func TestSendAppMessageApi(t *testing.T) {
 }
 
 func TestTextMessage(t *testing.T) {
-	err := c.SendTextMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，请忽略")
+	err := c.SendTextMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，来自双十一，请忽略")
 	if err != nil {
 		t.Error(err)
 	}
@@ -127,7 +127,6 @@ func TestVoiceMessage(t *testing.T) {
 		t.Error(err)
 	}
 }
-
 
 func TestRobotMessage(t *testing.T) {
 	err := c.SendRobotTextMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息")
