@@ -43,6 +43,7 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 	client := c.HTTPClient
 	var request *http.Request
 	url2 := ROOT + path + "?" + params.Encode()
+	// log.Println(url2)
 	if requestData != nil {
 		switch requestData.(type) {
 		case UploadFile:

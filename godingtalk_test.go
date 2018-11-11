@@ -3,7 +3,6 @@ package godingtalk
 import (
 	"os"
 	"testing"
-	"time"
 )
 
 var c *DingTalkClient
@@ -75,10 +74,10 @@ func TestTextMessage(t *testing.T) {
 			t.Error("Message id is empty")
 		}
 	}
-	time.Sleep(10000)
-	t.Error(data.MessageID)
 	data2, _ := c.GetMessageReadList(data.MessageID, 0, 10)
-	t.Error(data2)
+	if len(data2.ReadUserIdList) == 0 {
+		t.Error("Message Read List should not be empty")
+	}
 }
 
 func TestSendOAMessage(t *testing.T) {
