@@ -15,6 +15,10 @@ func init() {
 	}
 }
 
+func TestCalendarListApi(t *testing.T) {
+	c.ListEvents()
+}
+
 func TestDepartmentApi(t *testing.T) {
 	departments, err := c.DepartmentList()
 	// t.Logf("%+v %+v", departments, err)
