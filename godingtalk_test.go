@@ -19,7 +19,13 @@ func init() {
 func TestCalendarListApi(t *testing.T) {
 	from := time.Now().AddDate(0, 0, -1)
 	to := time.Now().AddDate(0, 0, 1)
-	c.ListEvents("0420506555", from, to)
+	events, err := c.ListEvents("0420506555", from, to)
+	if err != nil {
+		panic(err)
+	}
+	for _, event := range events {
+		t.Logf("%v %v %v %v", event.Start, event.End, event.Summary, event.Description)
+	}
 }
 
 func TestDepartmentApi(t *testing.T) {

@@ -4,15 +4,27 @@ import "time"
 
 type Event struct {
 	OAPIResponse
+	Id          int64
+	UUID        string `json:"unique_id"`
 	Location    string
 	Summary     string
 	Description string
+	Start       struct {
+		DateTime string `json:"date_time"`
+	}
+	End struct {
+		DateTime string `json:"date_time"`
+	}
 }
 
-type EventList struct {
+type ListEventsResponse struct {
 	OAPIResponse
-	HasMore   bool
-	EventList []Event
+	Result struct {
+		OAPIResponse
+		Data struct {
+			Events []Event `json:"items"`
+		} `json:"result"`
+	} `json:"result"`
 }
 
 type CalendarTime struct {
@@ -26,7 +38,7 @@ type CalendarRequest struct {
 	StaffId string       `json:"staff_id"`
 }
 
-func (c *DingTalkClient) ListEvents(staffid string, from time.Time, to time.Time) (events EventList, err error) {
+func (c *DingTalkClient) ListEvents(staffid string, from time.Time, to time.Time) (events []Event, err error) {
 	location := time.Now().Location().String()
 	timeMin := CalendarTime{
 		TimeZone: location,
@@ -44,6 +56,8 @@ func (c *DingTalkClient) ListEvents(staffid string, from time.Time, to time.Time
 			StaffId: staffid,
 		},
 	}
-	err = c.httpRPC("topapi/calendar/list", nil, data, &events)
+	var resp ListEventsResponse
+	err = c.httpRPC("topapi/calendar/list", nil, data, &resp)
+	events = resp.Result.Data.Events
 	return events, err
 }
