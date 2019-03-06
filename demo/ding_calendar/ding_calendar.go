@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/hugozhu/godingtalk"
+	dd "github.com/hugozhu/godingtalk"
 
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
@@ -17,10 +17,10 @@ import (
 	calendar "google.golang.org/api/calendar/v3"
 )
 
-var c *godingtalk.DingTalkClient
+var c *dd.DingTalkClient
 
 func init() {
-	c = godingtalk.NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
+	c = dd.NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
 	err := c.RefreshAccessToken()
 	if err != nil {
 		panic(err)
@@ -100,52 +100,36 @@ func main() {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
-	t := time.Now().Format(time.RFC3339)
-	events, err := srv.Events.List("primary").ShowDeleted(false).
-		SingleEvents(true).TimeMin(t).MaxResults(10).OrderBy("startTime").Do()
-	if err != nil {
-		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
-	}
-	fmt.Println("Upcoming events:")
-	if len(events.Items) == 0 {
-		fmt.Println("No upcoming events found.")
-	} else {
-		for _, item := range events.Items {
-			date := item.Start.DateTime
-			if date == "" {
-				date = item.Start.Date
-			}
-			fmt.Printf("%v (%v)\n", item.Summary, date)
-		}
-	}
-
 	// Refer to the Go quickstart on how to setup the environment:
 	// https://developers.google.com/calendar/quickstart/go
 	// Change the scope to calendar.CalendarScope and delete any stored credentials.
 
-	event := &calendar.Event{
-		Summary:     "Google I/O 2019 大会开始",
-		Location:    "800 Howard St., San Francisco, CA 94103",
-		Description: "测试日历",
-		Start: &calendar.EventDateTime{
-			DateTime: "2019-02-18T09:00:00-07:00",
-			TimeZone: "Asia/Shanghai",
-		},
-		End: &calendar.EventDateTime{
-			DateTime: "2019-02-19T09:00:00-07:00",
-			TimeZone: "Asia/Shanghai",
-		},
-		Recurrence: []string{"RRULE:FREQ=DAILY;COUNT=2"},
-		Attendees: []*calendar.EventAttendee{
-			&calendar.EventAttendee{Email: "lpage@example.com"},
-			&calendar.EventAttendee{Email: "sbrin@example.com"},
-		},
+	calendarId := "rcfqo75pviund7l4u7n52c1nmo@group.calendar.google.com"
+	from := time.Now()
+	to := time.Now().AddDate(0, 0, 1)
+	log.Println(from.Format("2006-01-02") + " " + to.Format("2006-01-02"))
+	events, _ := c.ListEvents("0420506555", from, to)
+	for _, event := range events {
+		log.Println(event.Summary)
+		googleEvent := &calendar.Event{
+			Summary:     event.Summary,
+			Location:    event.Location,
+			Description: event.Description,
+			Start: &calendar.EventDateTime{
+				DateTime: event.Start.DateTime,
+				TimeZone: "Asia/Shanghai",
+			},
+			End: &calendar.EventDateTime{
+				DateTime: event.End.DateTime,
+				TimeZone: "Asia/Shanghai",
+			},
+		}
+
+		googleEvent, err = srv.Events.Insert(calendarId, googleEvent).Do()
+		if err != nil {
+			log.Fatalf("Unable to create event. %v\n", err)
+		}
+		fmt.Printf("Event created: %s\n", googleEvent.HtmlLink)
 	}
 
-	calendarId := "primary"
-	event, err = srv.Events.Insert(calendarId, event).Do()
-	if err != nil {
-		log.Fatalf("Unable to create event. %v\n", err)
-	}
-	fmt.Printf("Event created: %s\n", event.HtmlLink)
 }
