@@ -14,9 +14,10 @@ import (
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
+	calendar "google.golang.org/api/calendar/v3"
 )
 
-var c *DingTalkClient
+var c *godingtalk.DingTalkClient
 
 func init() {
 	c = godingtalk.NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
