@@ -48,6 +48,7 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 	if ROOT == "" {
 		ROOT = "oapi.dingtalk.com"
 	}
+	DEBUG := os.Getenv("debug") != ""
 	url2 := "https://" + ROOT + "/" + path + "?" + params.Encode()
 	// log.Println(url2)
 	if requestData != nil {
@@ -74,12 +75,16 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 			request.Header.Set("Content-Type", w.FormDataContentType())
 		default:
 			d, _ := json.Marshal(requestData)
-			log.Printf("url: %s request: %s", url2, string(d))
+			if DEBUG {
+				log.Printf("url: %s request: %s", url2, string(d))
+			}
 			request, _ = http.NewRequest("POST", url2, bytes.NewReader(d))
 			request.Header.Set("Content-Type", typeJSON)
 		}
 	} else {
-		// log.Printf("url: %s", url2)
+		if DEBUG {
+			log.Printf("url: %s", url2)
+		}
 		request, _ = http.NewRequest("GET", url2, nil)
 	}
 	resp, err := client.Do(request)
@@ -93,11 +98,15 @@ func (c *DingTalkClient) httpRequest(path string, params url.Values, requestData
 
 	defer resp.Body.Close()
 	contentType := resp.Header.Get("Content-Type")
-	log.Printf("url: %s response content type: %s", url2, contentType)
+	if DEBUG {
+		log.Printf("url: %s response content type: %s", url2, contentType)
+	}
 	pos := len(typeJSON)
 	if len(contentType) >= pos && contentType[0:pos] == typeJSON {
 		content, err := ioutil.ReadAll(resp.Body)
-		log.Println(string(content))
+		if DEBUG {
+			log.Println(string(content))
+		}
 		if err == nil {
 			json.Unmarshal(content, responseData)
 			return responseData.checkError()

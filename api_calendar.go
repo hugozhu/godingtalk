@@ -1,5 +1,7 @@
 package godingtalk
 
+import "time"
+
 type Event struct {
 	OAPIResponse
 	Location    string
@@ -24,21 +26,22 @@ type CalendarRequest struct {
 	StaffId string       `json:"staff_id"`
 }
 
-func (c *DingTalkClient) ListEvents() (events EventList, err error) {
+func (c *DingTalkClient) ListEvents(staffid string, from time.Time, to time.Time) (events EventList, err error) {
+	location := time.Now().Location().String()
 	timeMin := CalendarTime{
-		TimeZone: "Asia/Shanghai",
-		Date:     "2019-02-03",
+		TimeZone: location,
+		Date:     from.Format("2006-01-02"),
 	}
 	timeMax := CalendarTime{
-		TimeZone: "Asia/Shanghai",
-		Date:     "2019-03-04",
+		TimeZone: location,
+		Date:     to.Format("2006-01-02"),
 	}
 
 	data := map[string]CalendarRequest{
 		"open_calendar_list_request": CalendarRequest{
 			TimeMax: timeMax,
 			TimeMin: timeMin,
-			StaffId: "0420506555",
+			StaffId: staffid,
 		},
 	}
 	err = c.httpRPC("topapi/calendar/list", nil, data, &events)

@@ -3,6 +3,7 @@ package godingtalk
 import (
 	"os"
 	"testing"
+	"time"
 )
 
 var c *DingTalkClient
@@ -16,7 +17,9 @@ func init() {
 }
 
 func TestCalendarListApi(t *testing.T) {
-	c.ListEvents()
+	from := time.Now().AddDate(0, 0, -1)
+	to := time.Now().AddDate(0, 0, 1)
+	c.ListEvents("0420506555", from, to)
 }
 
 func TestDepartmentApi(t *testing.T) {
