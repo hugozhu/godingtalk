@@ -18,9 +18,18 @@ import (
 )
 
 var c *dd.DingTalkClient
+var calendarId string
+var staffId string
+var timezone string
 
 func init() {
 	c = dd.NewDingTalkClient(os.Getenv("corpid"), os.Getenv("corpsecret"))
+	calendarId = os.Getenv("calendar_id")
+	staffId = os.Getenv("staff_id")
+	timezone = os.Getenv("timezone")
+	if timezone == "" {
+		timezone = "Asia/Shanghai"
+	}
 	err := c.RefreshAccessToken()
 	if err != nil {
 		panic(err)
@@ -82,6 +91,27 @@ func saveToken(path string, token *oauth2.Token) {
 	json.NewEncoder(f).Encode(token)
 }
 
+func eventsFromFile(file string) (map[string]dd.Event, error) {
+	f, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	var cache map[string]dd.Event
+	err = json.NewDecoder(f).Decode(&cache)
+	return cache, err
+}
+
+func saveEvents(path string, cache map[string]dd.Event) {
+	fmt.Printf("Saving events map to: %s\n", path)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
+	if err != nil {
+		log.Fatalf("Unable to cache oauth token: %v", err)
+	}
+	defer f.Close()
+	json.NewEncoder(f).Encode(cache)
+}
+
 func main() {
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
@@ -100,36 +130,38 @@ func main() {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
-	// Refer to the Go quickstart on how to setup the environment:
-	// https://developers.google.com/calendar/quickstart/go
-	// Change the scope to calendar.CalendarScope and delete any stored credentials.
-
-	calendarId := "rcfqo75pviund7l4u7n52c1nmo@group.calendar.google.com"
 	from := time.Now()
 	to := time.Now().AddDate(0, 0, 1)
 	log.Println(from.Format("2006-01-02") + " " + to.Format("2006-01-02"))
-	events, _ := c.ListEvents("0420506555", from, to)
+	events, _ := c.ListEvents(staffId, from, to)
+	cache, _ := eventsFromFile("events.json")
+	if cache == nil {
+		cache = make(map[string]dd.Event)
+	}
 	for _, event := range events {
 		log.Println(event.Summary)
-		googleEvent := &calendar.Event{
-			Summary:     event.Summary,
-			Location:    event.Location,
-			Description: event.Description,
-			Start: &calendar.EventDateTime{
-				DateTime: event.Start.DateTime,
-				TimeZone: "Asia/Shanghai",
-			},
-			End: &calendar.EventDateTime{
-				DateTime: event.End.DateTime,
-				TimeZone: "Asia/Shanghai",
-			},
+		if _, exist := cache[event.UUID]; !exist {
+			googleEvent := &calendar.Event{
+				Summary:     event.Summary,
+				Location:    event.Location,
+				Description: event.Description,
+				Start: &calendar.EventDateTime{
+					DateTime: event.Start.DateTime,
+					TimeZone: timezone,
+				},
+				End: &calendar.EventDateTime{
+					DateTime: event.End.DateTime,
+					TimeZone: timezone,
+				},
+			}
+			cache[event.UUID] = event
+			// log.Println(srv, googleEvent)
+			googleEvent, err = srv.Events.Insert(calendarId, googleEvent).Do()
+			if err != nil {
+				log.Fatalf("Unable to create event. %v\n", err)
+			}
+			fmt.Printf("Event created: %s\n", googleEvent.HtmlLink)
 		}
-
-		googleEvent, err = srv.Events.Insert(calendarId, googleEvent).Do()
-		if err != nil {
-			log.Fatalf("Unable to create event. %v\n", err)
-		}
-		fmt.Printf("Event created: %s\n", googleEvent.HtmlLink)
 	}
-
+	saveEvents("events.json", cache)
 }
