@@ -69,10 +69,16 @@ func (c *DingTalkClient) DepartmentDetail(id int) (Department, error) {
 }
 
 //UserList is 获取部门成员
-func (c *DingTalkClient) UserList(departmentID int) (UserList, error) {
+func (c *DingTalkClient) UserList(departmentID, offset, size int) (UserList, error) {
     var data UserList
+    if size > 100 {
+	return data, fmt.Errorf("size 最大100")
+    }
+
     params := url.Values{}
     params.Add("department_id", fmt.Sprintf("%d", departmentID))    
+    params.Add("offset", fmt.Sprintf("%d", offset))
+    params.Add("size", fmt.Sprintf("%d", size))
     err :=c.httpRPC("user/list", params, nil, &data)
     return data, err
 }

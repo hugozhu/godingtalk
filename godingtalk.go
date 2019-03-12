@@ -19,6 +19,7 @@ type DingTalkClient struct {
 	CorpID      string
 	CorpSecret  string
 	AgentID     string
+	PartnerID   string
 	AccessToken string
 	HTTPClient  *http.Client
 	Cache       Cache
