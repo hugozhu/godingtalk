@@ -11,10 +11,7 @@ import (
 
 const (
 	//VERSION is SDK version
-	VERSION = "0.1"
-
-	//ROOT is the root url
-	ROOT = "https://oapi.dingtalk.com/"
+	VERSION = "0.2"
 )
 
 //DingTalkClient is the Client to access DingTalk Open API
@@ -27,9 +24,9 @@ type DingTalkClient struct {
 	Cache       Cache
 
 	//社交相关的属性
-	SnsAppID string
-	SnsAppSecret string
-	SnsAccessToken string	
+	SnsAppID       string
+	SnsAppSecret   string
+	SnsAccessToken string
 }
 
 //Unmarshallable is
@@ -53,6 +50,19 @@ func (data *OAPIResponse) checkError() (err error) {
 
 func (data *OAPIResponse) getWriter() io.Writer {
 	return nil
+}
+
+//MessageResponse is
+type MessageResponse struct {
+	OAPIResponse
+	MessageID string `json:"messageId"`
+}
+
+//MessageResponse is
+type MessageReadListResponse struct {
+	OAPIResponse
+	NextCursor     int64    `json:"next_cursor"`
+	ReadUserIdList []string `json:"readUserIdList"`
 }
 
 //AccessTokenResponse is

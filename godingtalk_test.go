@@ -3,6 +3,7 @@ package godingtalk
 import (
 	"os"
 	"testing"
+	"time"
 )
 
 var c *DingTalkClient
@@ -12,6 +13,18 @@ func init() {
 	err := c.RefreshAccessToken()
 	if err != nil {
 		panic(err)
+	}
+}
+
+func TestCalendarListApi(t *testing.T) {
+	from := time.Now().AddDate(0, 0, -1)
+	to := time.Now().AddDate(0, 0, 1)
+	events, err := c.ListEvents("0420506555", from, to)
+	if err != nil {
+		panic(err)
+	}
+	for _, event := range events {
+		t.Logf("%v %v %v %v", event.Start, event.End, event.Summary, event.Description)
 	}
 }
 
@@ -66,9 +79,17 @@ func TestSendAppMessageApi(t *testing.T) {
 }
 
 func TestTextMessage(t *testing.T) {
-	err := c.SendTextMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，请忽略")
+	data, err := c.SendTextMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "测试消息，来自双十一，请忽略")
 	if err != nil {
 		t.Error(err)
+	} else {
+		if data.MessageID == "" {
+			t.Error("Message id is empty")
+		}
+	}
+	data2, _ := c.GetMessageReadList(data.MessageID, 0, 10)
+	if len(data2.ReadUserIdList) == 0 {
+		t.Error("Message Read List should not be empty")
 	}
 }
 
@@ -79,7 +100,7 @@ func TestSendOAMessage(t *testing.T) {
 	msg.Head.BgColor = "FFBBBBBB"
 	msg.Body.Title = "正文标题"
 	msg.Body.Content = "test content"
-	err := c.SendOAMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", msg)
+	_, err := c.SendOAMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", msg)
 	if err != nil {
 		t.Error(err)
 	}
@@ -105,7 +126,7 @@ func TestDownloadAndUploadImage(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	err = c.SendImageMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "@lADOHrf_oVxc")
+	_, err = c.SendImageMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "@lADOHrf_oVxc")
 	if err != nil {
 		t.Error(err)
 	}
@@ -122,19 +143,19 @@ func TestVoiceMessage(t *testing.T) {
 	// if err != nil {
 	// 	t.Error(err)
 	// }
-	err := c.SendVoiceMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "@lATOHr53E84DALnDzml4wS0", "10")
+	_, err := c.SendVoiceMessage("011217462940", "chat6a93bc1ee3b7d660d372b1b877a9de62", "@lATOHr53E84DALnDzml4wS0", "10")
 	if err != nil {
 		t.Error(err)
 	}
 }
-
 
 func TestRobotMessage(t *testing.T) {
-	err := c.SendRobotTextMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息")
+	_, err := c.SendRobotTextMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息")
 	if err != nil {
 		t.Error(err)
 	}
 }
+
 
 func TestRobotAtMessage(t *testing.T) {
 	err := c.SendRobotTextAtMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息", &RobotAtList{
