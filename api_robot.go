@@ -6,7 +6,7 @@ import (
 
 type RobotAtList struct {
 	AtMobiles []string `json:"atMobiles"`
-	IsAtAll bool `json:"isAtAll"`
+	IsAtAll   bool     `json:"isAtAll"`
 }
 
 //SendRobotTextMessage can send a text message to a group chat
@@ -19,8 +19,8 @@ func (c *DingTalkClient) SendRobotTextMessage(accessToken string, msg string) (d
 			"content": msg,
 		},
 	}
-	err := c.httpRPC("robot/send", params, request, &data)
-	return err
+	err = c.httpRPC("robot/send", params, request, &data)
+	return data, err
 }
 
 // SendRobotTextAtMessage can send a text message and at user to a group chat
@@ -33,7 +33,7 @@ func (c *DingTalkClient) SendRobotTextAtMessage(accessToken string, msg string, 
 		"text": map[string]interface{}{
 			"content": msg,
 		},
-		"at" : at,
+		"at": at,
 	}
 	err := c.httpRPC("robot/send", params, request, &data)
 	return err
