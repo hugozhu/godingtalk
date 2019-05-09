@@ -140,7 +140,7 @@ func main() {
 	}
 	for _, event := range events {
 		log.Println(event.Summary)
-		if _, exist := cache[event.UUID]; !exist {
+		if _, exist := cache[event.Id]; !exist {
 			googleEvent := &calendar.Event{
 				Summary:     event.Summary,
 				Location:    event.Location,
@@ -154,7 +154,7 @@ func main() {
 					TimeZone: timezone,
 				},
 			}
-			cache[event.UUID] = event
+			cache[event.Id] = event
 			// log.Println(srv, googleEvent)
 			googleEvent, err = srv.Events.Insert(calendarId, googleEvent).Do()
 			if err != nil {
