@@ -30,7 +30,7 @@ type topAPIErrResponse struct {
 	ERR struct {
 		Code      int    `json:"code"`
 		Msg       string `json:"msg"`
-		SubCode   string    `json:"sub_code"`
+		SubCode   string `json:"sub_code"`
 		SubMsg    string `json:"sub_msg"`
 		RequestID string `json:"request_id"`
 	} `json:"error_response"`
@@ -64,7 +64,7 @@ func (c *DingTalkClient) topAPIRequest(requestForm url.Values, respData TopAPIRe
 
 	req, _ := http.NewRequest("POST", topAPIRootURL, v)
 	req.Header.Set("Content-Type", formDataType)
-	client := &http.Client{}
+	client := c.HTTPClient
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
