@@ -140,6 +140,9 @@ func main() {
 	}
 	for _, event := range events {
 		log.Println(event.Summary)
+		reminders := &calendar.EventReminders{
+			UseDefault: true,
+		}
 		if _, exist := cache[event.Id]; !exist {
 			googleEvent := &calendar.Event{
 				Summary:     event.Summary,
@@ -153,6 +156,7 @@ func main() {
 					DateTime: event.End.DateTime,
 					TimeZone: timezone,
 				},
+				Reminders: reminders,
 			}
 			cache[event.Id] = event
 			// log.Println(srv, googleEvent)
