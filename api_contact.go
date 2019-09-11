@@ -123,3 +123,16 @@ func (c *DingTalkClient) UseridByUnionId(unionid string) (string, error) {
 
     return data.UserID, err
 }
+
+//UseridByMobile 通过手机号获取Userid
+func (c *DingTalkClient) UseridByMobile(mobile string) (string, error) {
+    var data struct{
+        OAPIResponse
+        UserID string `json:"userid"`
+    }
+
+    params := url.Values{}
+    params.Add("mobile", mobile)
+    err := c.httpRPC("user/get_by_mobile", params, nil, &data)
+    return data.UserID, err
+}
