@@ -2,7 +2,7 @@
 
 ![image](http://static.dingtalk.com/media/lALOAQ6nfSvM5Q_229_43.png)
 
-Check out DingTalk Open API document at: http://open.dingtalk.com
+Check out DingTalk Open API document at: https://ding-doc.dingtalk.com/
 
 ## Usage
 
