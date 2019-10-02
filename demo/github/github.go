@@ -9,9 +9,10 @@ import (
 	"os"
 	"time"
 
-	"appengine"
-	"appengine/memcache"
-	"appengine/urlfetch"
+	"golang.org/x/net/context"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/memcache"
+	"google.golang.org/appengine/urlfetch"
 
 	"strings"
 
@@ -93,7 +94,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 	msg.Body.Author = *event.Sender.Login
 
-	err = c.SendOAMessage(os.Getenv("SENDER_ID"), os.Getenv("CHAT_ID"), msg)
+	_, err = c.SendOAMessage(os.Getenv("SENDER_ID"), os.Getenv("CHAT_ID"), msg)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%v", err), http.StatusInternalServerError)
 	} else if refresh_token_error != nil {
@@ -123,11 +124,11 @@ func verifySignature(secret []byte, signature string, body []byte) bool {
 }
 
 type MemCache struct {
-	ctx appengine.Context
+	ctx context.Context
 	key string
 }
 
-func NewMemCache(ctx appengine.Context, key string) *MemCache {
+func NewMemCache(ctx context.Context, key string) *MemCache {
 	return &MemCache{
 		ctx: ctx,
 		key: key,
