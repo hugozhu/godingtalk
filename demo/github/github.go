@@ -12,7 +12,6 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/memcache"
-	"google.golang.org/appengine/urlfetch"
 
 	"strings"
 
@@ -44,11 +43,11 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	context := appengine.NewContext(r)
 	c := godingtalk.NewDingTalkClient(os.Getenv("CORP_ID"), os.Getenv("CORP_SECRET"))
-	c.HTTPClient = urlfetch.Client(context)
-	c.HTTPClient.Transport = &urlfetch.Transport{
-		Context: context,
-		AllowInvalidServerCertificate: true,
-	}
+	// c.HTTPClient = urlfetch.Client(context)
+	// c.HTTPClient.Transport = &urlfetch.Transport{
+	// 	Context: context,
+	// 	AllowInvalidServerCertificate: true,
+	// }
 	c.Cache = NewMemCache(context, ".access_token")
 	refresh_token_error := c.RefreshAccessToken()
 
