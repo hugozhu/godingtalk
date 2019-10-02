@@ -1,4 +1,4 @@
-module godingtalk
+module github.com/hugozhu/godingtalk
 
 go 1.13
 
