@@ -61,9 +61,9 @@ func main() {
 		err = c.SendAppMessage(agentID, toUser, content)
 	case "text":
 		if robot {
-			err = c.SendRobotTextMessage(token, content)
+			_, err = c.SendRobotTextMessage(token, content)
 		} else {
-			err = c.SendTextMessage(senderID, chatID, content)
+			_, err = c.SendTextMessage(senderID, chatID, content)
 		}
 	case "markdown":
 		c.SendRobotMarkdownMessage(token, title, content)
@@ -80,7 +80,7 @@ func main() {
 		if err != nil {
 			fatalError(err)
 		}
-		err = c.SendImageMessage(senderID, chatID, media.MediaID)
+		_, err = c.SendImageMessage(senderID, chatID, media.MediaID)
 		if err != nil {
 			fatalError(err)
 		}
@@ -97,7 +97,7 @@ func main() {
 		if err != nil {
 			fatalError(err)
 		}
-		err = c.SendVoiceMessage(senderID, chatID, media.MediaID, "10")
+		_, err = c.SendVoiceMessage(senderID, chatID, media.MediaID, "10")
 		if err != nil {
 			fatalError(err)
 		}
@@ -114,7 +114,7 @@ func main() {
 		if err != nil {
 			fatalError(err)
 		}
-		err = c.SendFileMessage(senderID, chatID, media.MediaID)
+		_, err = c.SendFileMessage(senderID, chatID, media.MediaID)
 		if err != nil {
 			fatalError(err)
 		}
@@ -131,14 +131,14 @@ func main() {
 		if err != nil {
 			fatalError(err)
 		}
-		err = c.SendLinkMessage(senderID, chatID, media.MediaID, link, title, text)
+		_, err = c.SendLinkMessage(senderID, chatID, media.MediaID, link, title, text)
 		if err != nil {
 			fatalError(err)
 		}
 	case "oa":
 		msg := dingtalk.OAMessage{}
 		json.Unmarshal([]byte(content), &msg)
-		err = c.SendOAMessage(senderID, chatID, msg)
+		_, err = c.SendOAMessage(senderID, chatID, msg)
 	}
 	if err != nil {
 		fmt.Println(err)
