@@ -154,6 +154,14 @@ func TestRobotMessage(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+
+	_, err = c.SendRobotMarkdownMessage(os.Getenv("token"), "测试标题", "# 杭州天气\n这是一条测试消息\n"+
+		"> 9度，西北风1级，空气良89，**相对温度**73%\n\n"+
+		"> ![screenshot](https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png)\n"+
+		"> ###### 10点20分发布 [天气](http://www.thinkpage.cn/) \n")
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestRobotAtMessage(t *testing.T) {
