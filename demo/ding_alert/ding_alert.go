@@ -66,7 +66,7 @@ func main() {
 			err = c.SendTextMessage(senderID, chatID, content)
 		}
 	case "markdown":
-		err = c.SendRobotMarkdownMessage(token, title, content)
+		c.SendRobotMarkdownMessage(token, title, content)
 	case "image":
 		if file == "" {
 			panic("Image path is empty")
