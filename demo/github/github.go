@@ -93,11 +93,14 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 	msg.Body.Author = *event.Sender.Login
 
-	_, err = c.SendOAMessage(os.Getenv("SENDER_ID"), os.Getenv("CHAT_ID"), msg)
+	data, err := c.SendOAMessage(os.Getenv("SENDER_ID"), os.Getenv("CHAT_ID"), msg)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("%v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("send error: %v %v", err, data), http.StatusInternalServerError)
 	} else if refresh_token_error != nil {
-		http.Error(w, fmt.Sprintf("%v", refresh_token_error), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("refresh error: %v", refresh_token_error), http.StatusInternalServerError)
+	} else {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "Hello, %v", data)
 	}
 }
 
