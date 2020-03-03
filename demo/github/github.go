@@ -124,15 +124,10 @@ func verifySignature(secret []byte, signature string, body []byte) bool {
 }
 
 type ZeroCache struct {
-	ctx context.Context
-	key string
 }
 
 func NewZeroCache(ctx context.Context, key string) *ZeroCache {
-	return &ZeroCache{
-		ctx: ctx,
-		key: key,
-	}
+	return &ZeroCache{}
 }
 
 func (c *ZeroCache) Set(data godingtalk.Expirable) error {
