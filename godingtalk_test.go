@@ -150,15 +150,22 @@ func TestVoiceMessage(t *testing.T) {
 }
 
 func TestRobotMessage(t *testing.T) {
-	_, err := c.SendRobotTextMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息")
+	_, err := c.SendRobotTextMessage(os.Getenv("token"), "这是一条测试消息")
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = c.SendRobotMarkdownMessage(os.Getenv("token"), "测试标题", "# 杭州天气\n这是一条测试消息\n"+
+		"> 9度，西北风1级，空气良89，**相对温度**73%\n\n"+
+		"> ![screenshot](https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png)\n"+
+		"> ###### 10点20分发布 [天气](http://www.thinkpage.cn/) \n")
 	if err != nil {
 		t.Error(err)
 	}
 }
 
-
 func TestRobotAtMessage(t *testing.T) {
-	err := c.SendRobotTextAtMessage("b7e4b04c66b5d53669affb0b92cf533b9eff9b2bc47f86ff9f4227a2ba73798e", "这是一条测试消息", &RobotAtList{
+	err := c.SendRobotTextAtMessage(os.Getenv("token"), "这是一条测试消息", &RobotAtList{
 		IsAtAll: true,
 	})
 	if err != nil {
