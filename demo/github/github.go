@@ -98,7 +98,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("refresh error: %v", refresh_token_error), http.StatusInternalServerError)
 	} else {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "Hello, %v", data)
+		fmt.Fprintf(w, "%v", data)
 	}
 }
 
