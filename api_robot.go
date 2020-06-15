@@ -9,6 +9,27 @@ type RobotAtList struct {
 	IsAtAll   bool     `json:"isAtAll"`
 }
 
+type RobotOutgoingMessage struct {
+	MessageType string `json:"msgtype"`
+	Text        struct {
+		Content string `json:"content,omitempty"`
+	} `json:"text,omitempty"`
+	MessageID         string `json:"msgId"`
+	CreatedAt         int64  `json:"createAt"`
+	ConversationID    string `json:"conversationId"`
+	ConversationType  string `json:"conversationType"`
+	ConversationTitle string `json:"conversationTitle"`
+	SenderID          string `json:"senderId"`
+	SenderNick        string `json:"senderNick"`
+	SenderCorpID      string `json:"senderCorpId"`
+	SenderStaffID     string `json:"senderStaffId"`
+	ChatbotUserID     string `json:"chatbotUserId"`
+	AtUsers           []struct {
+		DingTalkID string `json:"dingtalkId,omitempty"`
+		StaffID    string `json:"staffId,omitempty"`
+	} `json:"atUsers,omitempty"`
+}
+
 //SendRobotTextMessage can send a text message to a group chat
 func (c *DingTalkClient) SendRobotTextMessage(accessToken string, msg string) (data MessageResponse, err error) {
 	params := url.Values{}

@@ -165,7 +165,7 @@ func TestRobotMessage(t *testing.T) {
 }
 
 func TestRobotAtMessage(t *testing.T) {
-	err := c.SendRobotTextAtMessage(os.Getenv("token"), "这是一条测试消息", &RobotAtList{
+	_, err := c.SendRobotTextAtMessage(os.Getenv("token"), "这是一条测试消息", &RobotAtList{
 		IsAtAll: true,
 	})
 	if err != nil {
