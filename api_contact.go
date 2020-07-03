@@ -16,12 +16,11 @@ type User struct {
     IsAdmin bool
     IsBoss bool
     IsLeader bool
-	IsSys bool `json:"is_sys"`
-	SysLevel int `json:"sys_level"`
     Active bool
     Department []int
     Position string
     Email string
+    OrgEmail string
     Avatar string
     Extattr interface{}
 }
