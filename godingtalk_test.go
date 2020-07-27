@@ -23,9 +23,9 @@ func TestCalendarListApi(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	for _, event := range events {
-		t.Logf("%v %v %v %v", event.Start, event.End, event.Summary, event.Description)
-	}
+	//for _, event := range events {
+	//	t.Logf("%v %v %v %v", event.Start, event.End, event.Summary, event.Description)
+	//}
 }
 
 func TestDepartmentApi(t *testing.T) {
