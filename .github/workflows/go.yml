@@ -12,7 +12,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
@@ -34,4 +33,7 @@ jobs:
       run: go build -v .
 
     - name: Test
+      env:
+        corpid: ${{ secrets.CORPID }}
+        corpsecret: ${{ secrets.CORPSECRET }}
       run: go test -v .
