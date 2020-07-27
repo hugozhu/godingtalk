@@ -12,7 +12,11 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-
+    - shell: bash
+    env:
+      CORPID: ${{ secrets.CORPID }}
+      CORPSECRET: ${{ secrets.CORPSECRET }}
+   
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
