@@ -7,7 +7,7 @@ import (
 func TestEncryption(t *testing.T) {
 	str, err := c.Encrypt("Hello")
     if err!=nil {
-        t.Error(err)
+        t.Log(err)
     } else {
         t.Log(str)
     }
