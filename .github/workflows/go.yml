@@ -36,4 +36,4 @@ jobs:
       env:
         corpid: ${{ secrets.CORPID }}
         corpsecret: ${{ secrets.CORPSECRET }}
-      run: go test -v .
+      run: go test .
