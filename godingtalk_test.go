@@ -19,7 +19,7 @@ func init() {
 func TestCalendarListApi(t *testing.T) {
 	from := time.Now().AddDate(0, 0, -1)
 	to := time.Now().AddDate(0, 0, 1)
-	events, err := c.ListEvents("0420506555", from, to)
+	_, err := c.ListEvents("0420506555", from, to)
 	if err != nil {
 		panic(err)
 	}
