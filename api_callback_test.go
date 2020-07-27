@@ -7,15 +7,15 @@ import (
 func TestRegisterCallback(t *testing.T) {
 	err := c.UpdateCallback([]string{"user_modify_org"}, "hello", "1234567890123456789012345678901234567890aes", "http://go.myalert.info:8888/dingtalk/callback/")
 	if err != nil {
-		t.Error(err)
+		t.Print(err)
 	}
 	err = c.DeleteCallback()
 	if err != nil {
-		t.Error(err)
+		t.Print(err)
 	}
 	err = c.RegisterCallback([]string{"user_add_org"}, "hello", "1234567890123456789012345678901234567890aes", "http://go.myalert.info:8888/dingtalk/callback/")
 	if err != nil {
-		t.Error(err)
+		t.Print(err)
 	}
 }
 
