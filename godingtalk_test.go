@@ -106,7 +106,7 @@ func TestSendOAMessage(t *testing.T) {
 	}
 }
 
-func TestDownloadAndUploadImage(t *testing.T) {
+func _TestDownloadAndUploadImage(t *testing.T) {
 	f, err := os.Create("lADOHrf_oVxc.jpg")
 	if err == nil {
 		err = c.DownloadMedia("@lADOHrf_oVxc", f)
