@@ -11,13 +11,16 @@ import (
 
 const (
 	//VERSION is SDK version
-	VERSION = "0.2"
+	VERSION = "0.3"
 )
 
 //DingTalkClient is the Client to access DingTalk Open API
 type DingTalkClient struct {
 	CorpID      string
 	CorpSecret  string
+
+    UseAppKey   bool
+
 	AgentID     string
 	PartnerID   string
 	AccessToken string
@@ -124,8 +127,15 @@ func (c *DingTalkClient) RefreshAccessToken() error {
 	}
 
 	params := url.Values{}
-	params.Add("corpid", c.CorpID)
-	params.Add("corpsecret", c.CorpSecret)
+
+    if !c.UseAppKey {
+        params.Add("corpid", c.CorpID)
+	    params.Add("corpsecret", c.CorpSecret)
+    } else {
+        params.Add("appkey", c.CorpID)
+        params.Add("appsecret", c.CorpSecret)
+    }
+
 	err = c.httpRPC("gettoken", params, nil, &data)
 	if err == nil {
 		c.AccessToken = data.AccessToken
