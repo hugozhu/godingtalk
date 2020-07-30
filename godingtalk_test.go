@@ -16,6 +16,18 @@ func init() {
 	}
 }
 
+func TestInitWithAppKey(t *testing.T) {
+	c1 := NewDingTalkClient(os.Getenv("appkey"), os.Getenv("appsecret"))
+	err := c1.RefreshAccessToken(true)
+	if err != nil {
+		panic(err)
+	}
+	_, err = c1.SendRobotTextMessage(os.Getenv("token"), "Message sent successfully with appkey and appsecret")
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 func TestCalendarListApi(t *testing.T) {
 	from := time.Now().AddDate(0, 0, -1)
 	to := time.Now().AddDate(0, 0, 1)
