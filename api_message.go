@@ -39,6 +39,37 @@ func (c *DingTalkClient) SendAppOAMessage(agentID string, touser string, msg OAM
 	return err
 }
 
+// ActionCardMessage
+func (c *DingTalkClient) SendOverAllActionCardMessage(agentID string, touser string, msg OverAllActionCardMessage) error {
+	if agentID == "" {
+		agentID = c.AgentID
+	}
+	var data OAPIResponse
+	request := map[string]interface{}{
+		"touser":  touser,
+		"agentid": agentID,
+		"msgtype": "action_card",
+		"action_card":      msg,
+	}
+	err := c.httpRPC("message/send", nil, request, &data)
+	return err
+}
+
+func (c *DingTalkClient) SendIndependentActionCardMessage(agentID string, touser string, msg IndependentActionCardMessage) error {
+	if agentID == "" {
+		agentID = c.AgentID
+	}
+	var data OAPIResponse
+	request := map[string]interface{}{
+		"touser":  touser,
+		"agentid": agentID,
+		"msgtype": "action_card",
+		"action_card":      msg,
+	}
+	err := c.httpRPC("message/send", nil, request, &data)
+	return err
+}
+
 //SendAppLinkMessage is 发送企业会话链接消息
 func (c *DingTalkClient) SendAppLinkMessage(agentID, touser string, title, text string, picUrl, url string) error {
 	if agentID == "" {
@@ -132,6 +163,38 @@ func (c *DingTalkClient) SendLinkMessage(sender string, cid string, mediaID stri
 	}
 	err = c.httpRPC("chat/send", nil, request, &data)
 	return data, err
+}
+
+
+// OverAllActionCardMessage 整体跳转ActionCard
+type OverAllActionCardMessage struct {
+	Title 		string `json:"title"`
+	MarkDown 	string `json:"markdown"`
+	SingleTitle string `json:"single_title"`
+	SingleUrl 	string `json:"single_url"`
+}
+
+// IndependentActionCardMessage 独立跳转ActionCard
+type IndependentActionCardMessage struct {
+	Title 			string `json:"title"`
+	MarkDown 		string `json:"markdown"`
+	BtnOrientation 	string `json:"btn_orientation"`
+	BtnJsonList 	[]ActionCardMessageBtnList `json:"btn_json_list"`
+}
+
+type ActionCardMessageBtnList struct {
+	Title   	string `json:"title,omitempty"`
+	ActionUrl 	string `json:"action_url,omitempty"`
+}
+
+func (m *IndependentActionCardMessage) AppendBtnItem(title string, action_url string) {
+	f := ActionCardMessageBtnList{Title: title, ActionUrl: action_url}
+
+	if m.BtnJsonList == nil {
+		m.BtnJsonList = []ActionCardMessageBtnList{}
+	}
+
+	m.BtnJsonList = append(m.BtnJsonList, f)
 }
 
 //OAMessage is the Message for OA
