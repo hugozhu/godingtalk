@@ -38,6 +38,7 @@ func (c *DingTalkClient) DownloadMedia(mediaID string, write io.Writer) error {
 	data.Writer = write
 	params := url.Values{}
 	params.Add("media_id", mediaID)
+	c.HTTPClient.Timeout = 120 * time.Second
 	err := c.httpRPC("media/get", params, nil, &data)
 	return err
 }
