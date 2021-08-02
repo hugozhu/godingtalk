@@ -3,6 +3,7 @@ package godingtalk
 import (
 	"io"
 	"net/url"
+	"time"
 )
 
 //MediaResponse is
@@ -26,6 +27,7 @@ func (c *DingTalkClient) UploadMedia(mediaType string, filename string, reader i
 	}
 	params := url.Values{}
 	params.Add("type", mediaType)
+	c.HTTPClient.Timeout = 120 * time.Second
 	err = c.httpRPC("media/upload", params, upload, &media)
 	return media, err
 }
